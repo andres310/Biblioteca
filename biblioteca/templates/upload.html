@@ -1,7 +1,57 @@
-<body>  
-    <form method="POST" class="post-form" enctype="multipart/form-data">  
-            {% csrf_token %}  
-            {{ form.as_p }}  
-            <button type="submit" class="save btn btn-default">Save</button>  
-    </form>  
-</body>
+{% extends 'base.html' %}
+{% block title %}Subir contenido{% endblock %}
+{% load static %}
+{% block content %}
+<style>
+    img {
+        height: calc(100% - 6.8rem);
+        /*max-height: 25rem;  400 px */
+        width: 100%;
+        object-fit: cover;
+    }
+    .img-card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        grid-gap: 4rem;
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        margin-bottom: 6rem;
+    }
+    .img-card {
+        display: block;
+        text-align: center;
+    }
+</style>
+<!--{% csrf_token %}{{ fileForm.as_p }}-->
+<!--button type="submit" class="save btn btn-default">Save</button-->
+
+<section class="container-fluid">
+    <section class="img-card-grid align-middle">
+        <div class="img-card">
+            <a href="#videoModal" id="video" data-bs-toggle="modal" role="button" aria-expanded="false" aria-controls="videoModal">
+                <img src="{% static 'img/video-marketing.png' %}" class="img-thumbnail" alt="subir video">
+                <h3>Video</h3>
+            </a>
+        </div>
+        <div class="img-card">
+            <a href="#archivoModal" id="archivo" data-bs-toggle="modal" role="button" aria-expanded="false" aria-controls="archivoModal">
+                <img src="{% static 'img/pdf-file.png' %}" class="img-thumbnail" alt="subir archvio">
+                <h3>Archivo</h3>
+            </a>
+        </div>
+        <div class="img-card">
+            <a href="#linkYtModal" id="linkYt" data-bs-toggle="modal" role="button" aria-expanded="false" aria-controls="linkYtModal">
+                <img src="{% static 'img/url.png' %}" class="img-thumbnail" alt="subir video youtube">
+                <h3>Link de YouTube</h3>
+            </a>
+        </div>
+        <div class="img-card">
+            <a href="#imagenModal" id="imagen" data-bs-toggle="modal" role="button" aria-expanded="false" aria-controls="imagenModal">
+                <img src="{% static 'img/image.png' %}" class="img-thumbnail" alt="subir imagen">
+                <h3>Imagen</h3>
+            </a>
+        </div>
+    </section>
+</section>
+{% endblock %}
