@@ -23,9 +23,30 @@
         text-align: center;
     }
 </style>
-<!--{% csrf_token %}{{ fileForm.as_p }}-->
-<!--button type="submit" class="save btn btn-default">Save</button-->
+<header class="container-fluid">
+    <!--INICIO NAVBAR-->
+    <nav class="navbar sticky-top navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Biblioteca</a>
 
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </form>
+
+            <div class="dropdown dropstart">
+                <a class="dropdowm-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ request.user.username }}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="{% url 'upload' %}">Subir contenido</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+      <!--FIN NAVBAR-->
+</header>
 <section class="container-fluid">
     <section class="img-card-grid align-middle">
         <div class="img-card">
@@ -54,4 +75,95 @@
         </div>
     </section>
 </section>
+<!--INICIO MODAL-->
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="videoModalLabel">Subir Video</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <section class="d-flex justify-content-center">
+                    <form method="POST" action="" class="mt-2" enctype="multipart/form-data" autocomplete="off">
+                        {% csrf_token %}
+                        {{ videoForm.as_p }}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="save btn btn-primary">Subir Video</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="archivoModal" tabindex="-1" aria-labelledby="archivoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="archivoModalLabel">Subir Archivo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <section class="d-flex justify-content-center">
+                    <form method="POST" action="" class="mt-2" enctype="multipart/form-data" autocomplete="off">
+                        {% csrf_token %}
+                        {{ fileForm.as_p }}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="save btn btn-primary">Subir Archivo</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="linkYtModal" tabindex="-1" aria-labelledby="linkYtModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="linkYtModalLabel">Subir Link de YouTube</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <section class="d-flex justify-content-center">
+                    <form method="POST" action="" class="mt-2" enctype="multipart/form-data" autocomplete="off">                      
+                        {% csrf_token %}
+                        {{ ytLinkForm.as_p }}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="save btn btn-primary">Subir</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="imagenModal" tabindex="-1" aria-labelledby="imagenModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagenModalLabel">Subir Imagen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <section class="d-flex justify-content-center">
+                    <form method="post" action="." class="post-form mt-2" enctype="multipart/form-data" autocomplete="off">
+                        {% csrf_token %}
+                        {{ imageForm.as_p }}
+                        <button type="submit" class="save btn btn-primary">Subir Imagen</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<!--FINAL MODAL-->
 {% endblock %}
