@@ -12,15 +12,19 @@
                     <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
                     <button class="btn btn-primary" type="submit">Buscar</button>
                 </form>
-
-                <div class="dropdown dropstart">
-                    <a class="dropdowm-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ request.user.username }}
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'upload' %}">Subir contenido</a></li>
-                    </ul>
-                </div>
+                {% if user.is_authenticated %}
+                    <div class="dropdown dropstart">
+                      <a class="dropdowm-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          {{ request.user.username }}
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li><a class="dropdown-item" href="{% url 'upload' %}">Subir contenido</a></li>
+                          <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesi&oacute;n</a></li>
+                      </ul>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" role="button">Iniciar sesi&oacute;n</a>
+                {% endif %}
 
             </div>
         </nav>
@@ -76,12 +80,81 @@
         <!--FIN FILTROS-->
         <section class="grid">
             <br>
-            {% for file in files %}
-            <figure class="figure">
-              <!--img src="./img/prueba.jpg" class="figure-img img-fluid rounded" alt="placeholder"-->
-              <figcaption class="figure-caption">{{ file.title }}</figcaption>
-            </figure>
-            {% endfor %}
+            {% if files %}
+              {% for file in files %}
+                {% if forloop.first %}<div class="row">{% endif %}
+                <div class="col-3">
+                    <div class="card">
+                        <a href="{{ file.file.url }}">
+                            <img src="{{ file.cover.url }}" alt="{{ file.title }}" style="width:100%; max-width:20rem; height:auto;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ file.title }}</h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
+                {% if forloop.last %}</div>{% endif %}
+              {% endfor %}
+            {% else %}
+                <p>No hay archivos que mostrar</p>
+            {% endif %}
+                  <br>
+            {% if videos %}
+              {% for video in videos %}
+                {% if forloop.first %}<div class="row">{% endif %}
+                <div class="col-3">
+                    <div class="card">
+                        <a href="{{ video.video.url }}"></a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ video.title }}</h5>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
+                {% if forloop.last %}</div>{% endif %}
+              {% endfor %}
+            {% else %}
+                <p>No hay videos que mostrar</p>
+            {% endif %}
+                  <br>
+            {% if images %}
+              {% for img in images %}
+                {% if forloop.first %}<div class="row">{% endif %}
+                    <div class="col-3">
+                        <div class="card">
+                            <img src="{{ img.img.url }}" class="card-img-top" alt="{{ img.title }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ img.title }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
+                {% if forloop.last %}</div>{% endif %}
+              {% endfor %}
+            {% else %}
+                <p>No hay imagenes que mostrar</p>
+            {% endif %}
+                  <br>
+            {% if links %}
+              {% for link in links %}
+                {% if forloop.first %}<div class="row">{% endif %}
+                    <div class="col-3">
+                        <div class="card">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe src="{{ link.link }}" class="embed-responsive-item" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ link.title }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
+                {% if forloop.last %}</div>{% endif %}
+              {% endfor %}
+            {% else %}
+                <p>No hay links que mostrar</p>
+            {% endif %}
         </section>
         <!--INICIO PAGINACION-->
         <br>

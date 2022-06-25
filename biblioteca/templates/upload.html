@@ -88,6 +88,7 @@
                     <form method="POST" action="" class="mt-2" enctype="multipart/form-data" autocomplete="off">
                         {% csrf_token %}
                         {{ videoForm.as_p }}
+                        <input type="hidden" name="name" value="videoForm">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="save btn btn-primary">Subir Video</button>
@@ -110,6 +111,7 @@
                     <form method="POST" action="" class="mt-2" enctype="multipart/form-data" autocomplete="off">
                         {% csrf_token %}
                         {{ fileForm.as_p }}
+                        <input type="hidden" name="name" value="fileForm">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="save btn btn-primary">Subir Archivo</button>
@@ -129,12 +131,13 @@
             </div>
             <div class="modal-body">
                 <section class="d-flex justify-content-center">
-                    <form method="POST" action="" class="mt-2" enctype="multipart/form-data" autocomplete="off">                      
+                    <form method="POST" action="" class="mt-2" autocomplete="off">                      
                         {% csrf_token %}
                         {{ ytLinkForm.as_p }}
+                        <input type="hidden" name="name" value="ytLinkForm">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="save btn btn-primary">Subir</button>
+                            <button type="submit" class="save btn btn-primary">Subir Link</button>
                         </div>
                     </form>
                 </section>
@@ -154,10 +157,10 @@
                     <form method="post" action="." class="post-form mt-2" enctype="multipart/form-data" autocomplete="off">
                         {% csrf_token %}
                         {{ imageForm.as_p }}
-                        <button type="submit" class="save btn btn-primary">Subir Imagen</button>
+                        <input type="hidden" name="name" value="imageForm">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            
+                            <button type="submit" class="save btn btn-primary">Subir Imagen</button>
                         </div>
                     </form>
                 </section>
