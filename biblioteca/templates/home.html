@@ -41,7 +41,7 @@
     <br>
     <section class="container-sm">
         <!--INICIO FILTROS-->
-        <button type="button" class="btn btn-primary" data-bs-target="#offcanvasFiltros" data-bs-toggle="offcanvas" aria-controls="offCanvasFiltros">
+        <!--button type="button" class="btn btn-primary" data-bs-target="#offcanvasFiltros" data-bs-toggle="offcanvas" aria-controls="offCanvasFiltros">
             Filtros
         </button>
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFiltros" aria-labelledby="offcanvasFiltrosLabel">
@@ -76,23 +76,24 @@
                     </li>
                 </ul>
             </section>
-        </div>
+        </div-->
         <!--FIN FILTROS-->
-        <section class="grid">
+        </section>
+        <section class="container-fluid">
             <br>
-            {% if files %}
+        	{% if files %}
               {% for file in files %}
                 {% if forloop.first %}<div class="row">{% endif %}
-                <div class="col-3">
-                    <div class="card">
-                        <a href="{{ file.file.url }}">
-                            <img src="{{ file.cover.url }}" alt="{{ file.title }}" style="width:100%; max-width:20rem; height:auto;">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ file.title }}</h5>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+					<div class="col-3">
+						<a href="file/{{ file.id }}" name="file">
+							<div class="card mw-50">
+								<img src="{{ file.cover.url }}" alt="{{ file.title }}" style="width:100%; max-width:20rem; height:auto;">
+								<div class="card-body">
+									<h5 class="card-title">{{ file.title }}</h5>
+								</div>
+							</div>
+						</a>
+					</div>
                 {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
                 {% if forloop.last %}</div>{% endif %}
               {% endfor %}
@@ -103,14 +104,16 @@
             {% if videos %}
               {% for video in videos %}
                 {% if forloop.first %}<div class="row">{% endif %}
-                <div class="col-3">
-                    <div class="card">
-                        <a href="{{ video.video.url }}"></a>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ video.title }}</h5>
-                        </div>
-                    </div>
-                </div>
+						<div class="col-3">
+							<a href="video/{{ video.id }}" name="video">
+								<div class="card mw-50">
+									<a href="{{ video.video.url }}"></a>
+									<div class="card-body">
+										<h5 class="card-title">{{ video.title }}</h5>
+									</div>
+								</div>
+							</a>
+						</div>
                 {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
                 {% if forloop.last %}</div>{% endif %}
               {% endfor %}
@@ -121,14 +124,16 @@
             {% if images %}
               {% for img in images %}
                 {% if forloop.first %}<div class="row">{% endif %}
-                    <div class="col-3">
-                        <div class="card">
-                            <img src="{{ img.img.url }}" class="card-img-top" alt="{{ img.title }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ img.title }}</h5>
-                            </div>
-                        </div>
-                    </div>
+						<div class="col-3">
+							<a href="image/{{ img.id }}" name="img">
+								<div class="card mw-50">
+									<img src="{{ img.img.url }}" class="card-img-top" alt="{{ img.title }}">
+									<div class="card-body">
+										<h5 class="card-title">{{ img.title }}</h5>
+									</div>
+								</div>
+							</a>
+						</div>
                 {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
                 {% if forloop.last %}</div>{% endif %}
               {% endfor %}
@@ -140,14 +145,16 @@
               {% for link in links %}
                 {% if forloop.first %}<div class="row">{% endif %}
                     <div class="col-3">
-                        <div class="card">
-                            <div class="embed-responsive embed-responsive-16by9">
-                                <iframe src="{{ link.link }}" class="embed-responsive-item" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">{{ link.title }}</h5>
-                            </div>
-                        </div>
+						<a href="link/{{ link.id }}" name="link">
+							<div class="card mw-50">
+								<div class="embed-responsive embed-responsive-16by9">
+									<iframe src="{{ link.link }}" class="embed-responsive-item" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+								</div>
+								<div class="card-body">
+									<h5 class="card-title">{{ link.title }}</h5>
+								</div>
+							</div>
+						</a>
                     </div>
                 {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
                 {% if forloop.last %}</div>{% endif %}

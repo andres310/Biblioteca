@@ -1,4 +1,6 @@
 from django.db import models
+from django.template.defaultfilters import slugify
+import os
 
 
 class File(models.Model):
@@ -10,7 +12,17 @@ class File(models.Model):
     publication_date = models.DateField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return self.title
+        return slugify(self.title)
+
+    def delete(self, *args, **kwargs):
+        if os.path.isfile(self.cover.path):
+            os.remove(self.cover.path)
+        if os.path.isfile(self.file.path):
+            os.remove(self.file.path)
+        super(File, self).delete(*args, **kwargs)
+
+    def content_type(self):
+        return 'file'
 
     class Meta():
         db_table = 'files'
@@ -26,7 +38,15 @@ class Video(models.Model):
     video = models.FileField(verbose_name='Video', upload_to='videos/%y/%m/%d', null=False)
 
     def __str__(self) -> str:
-        return self.video
+        return slugify(self.title)
+
+    def delete(self, *args, **kwargs):
+        if os.path.isfile(self.video.path):
+            os.remove(self.video.path)
+        super(Video, self).delete(*args, **kwargs)
+
+    def content_type(self):
+        return 'video'
     
     class Meta():
         db_table = 'videos'
@@ -40,7 +60,15 @@ class Image(models.Model):
     img = models.ImageField(verbose_name='Imagen', upload_to='imagenes/%y/%m/%d', null=False)
 
     def __str__(self) -> str:
-        return self.img
+        return slugify(self.title)
+
+    def delete(self, *args, **kwargs):
+        if os.path.isfile(self.img.path):
+            os.remove(self.img.path)
+        super(Image, self).delete(*args, **kwargs)
+
+    def content_type(self):
+        return 'image'
     
     class Meta():
         db_table = 'images'
@@ -54,7 +82,10 @@ class Link(models.Model):
     link = models.URLField(verbose_name='Link', null=False)
 
     def __str__(self) -> str:
-        return self.link
+        return slugify(self.title)
+
+    def content_type(self):
+        return 'Link'
 
     class Meta():
         db_table = 'links'

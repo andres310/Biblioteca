@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}{{ media.title }}{% endblock %}
+{% load static %}
+{% block content %}
+<header>
+    <!--INICIO NAVBAR-->
+    <nav class="navbar sticky-top navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Biblioteca</a>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </form>
+            {% if user.is_authenticated %}
+                <div class="dropdown dropstart">
+                    <a class="dropdowm-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ request.user.username }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'upload' %}">Subir contenido</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesi&oacute;n</a></li>
+                    </ul>
+                </div>
+            {% else %}
+                <a href="{% url 'login' %}" role="button">Iniciar sesi&oacute;n</a>
+            {% endif %}
+        </div>
+    </nav>
+<!--FIN NAVBAR-->
+</header>
+<!--INICIO DETALLE CONTENIDO-->
+<section class="container-fluid">
+    <br>
+    <h1 class="text-center">{{ media.title }}</h1>
+    <div class="d-lg-flex flex-column align-items-center">
+        {% if is_file %}
+            <div class="mw-25 ">
+                <img src="{{ media.cover.url }}" class="img-fluid" alt="{{ media.title }}">
+            </div>
+            <div class="container-flex">
+                <h5>{{ media.author }}</h5>
+                <p>{{ media.summary }}</p>
+            </div>
+        {% elif is_video %}
+            <video width="320" height="auto">
+                <source src="{{ media.video.url }}" type="video/mp4">
+            </video>
+            <div class="container-flex">
+                <h5>{{ media.author }}</h5>
+                <p>{{ media.summary }}</p>
+            </div>
+        {% elif is_image %}
+            <img src="{{ media.img.url }}" alt="{{ media.title }}">
+        {% else %}
+        <iframe 
+            src="{{ media.link }}" 
+            class="embed-responsive-item" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen></iframe>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <div class="d-flex">
+            <a href="{% url 'delete' media.content_type media.id %}" class="btn btn-danger">
+                Eliminar
+            </a>
+            <a href="" class="btn btn-primary">
+                Editar
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+<!--FIN DETALLE CONTENIDO-->
+{% endblock %}
