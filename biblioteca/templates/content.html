@@ -2,32 +2,6 @@
 {% block title %}{{ media.title }}{% endblock %}
 {% load static %}
 {% block content %}
-<header>
-    <!--INICIO NAVBAR-->
-    <nav class="navbar sticky-top navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home' %}">Biblioteca</a>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
-                <button class="btn btn-primary" type="submit">Buscar</button>
-            </form>
-            {% if user.is_authenticated %}
-                <div class="dropdown dropstart">
-                    <a class="dropdowm-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ request.user.username }}
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'upload' %}">Subir contenido</a></li>
-                        <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesi&oacute;n</a></li>
-                    </ul>
-                </div>
-            {% else %}
-                <a href="{% url 'login' %}" role="button">Iniciar sesi&oacute;n</a>
-            {% endif %}
-        </div>
-    </nav>
-<!--FIN NAVBAR-->
-</header>
 <!--INICIO DETALLE CONTENIDO-->
 <section class="container-fluid">
     <br>
@@ -65,7 +39,7 @@
             <a href="{% url 'delete' media.content_type media.id %}" class="btn btn-danger">
                 Eliminar
             </a>
-            <a href="" class="btn btn-primary">
+            <a href="{% url 'update' media.content_type media.id %}" class="btn btn-primary">
                 Editar
             </a>
         </div>
