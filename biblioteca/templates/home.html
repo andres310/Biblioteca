@@ -2,6 +2,15 @@
 {% block title %}Inicio{% endblock %}
 {% load static %}
 {% block content %}
+<style>
+	a {
+		color: #000;
+		text-decoration: none;
+	}
+	a:hover {
+		color: #0d6efd
+	}
+</style>
     <header class="container-fluid">
           <div class="container-fluid">
               <img src="{% static 'img/header.jpg' %}" class="img-fluid mx-auto d-block" alt="muchos libros" style="
@@ -59,11 +68,12 @@
               {% for file in files %}
                 {% if forloop.first %}<div class="row">{% endif %}
 					<div class="col-3">
-						<a href="file/{{ file.id }}" name="file">
+						<a href="{% url 'detail' file.content_type file.id %}" name="file">
 							<div class="card mw-50">
 								<img src="{{ file.cover.url }}" alt="{{ file.title }}" style="width:100%; max-width:20rem; height:auto;">
 								<div class="card-body">
 									<h5 class="card-title">{{ file.title }}</h5>
+									<h6 class="card-subtitle mb-2 text-muted">{{ file.author }}</h6>
 								</div>
 							</div>
 						</a>
@@ -79,11 +89,12 @@
               {% for video in videos %}
                 {% if forloop.first %}<div class="row">{% endif %}
 						<div class="col-3">
-							<a href="video/{{ video.id }}" name="video">
+							<a href="{% url 'detail' video.content_type video.id %}" name="video">
 								<div class="card mw-50">
 									<a href="{{ video.video.url }}"></a>
 									<div class="card-body">
 										<h5 class="card-title">{{ video.title }}</h5>
+										<h6 class="card-subtitle mb-2 text-muted">{{ video.author}}</h6>
 									</div>
 								</div>
 							</a>
@@ -99,7 +110,7 @@
               {% for img in images %}
                 {% if forloop.first %}<div class="row">{% endif %}
 						<div class="col-3">
-							<a href="image/{{ img.id }}" name="img">
+							<a href="{% url 'detail' img.content_type img.id %}" name="img">
 								<div class="card mw-50">
 									<img src="{{ img.img.url }}" class="card-img-top" alt="{{ img.title }}">
 									<div class="card-body">
@@ -119,7 +130,7 @@
               {% for link in links %}
                 {% if forloop.first %}<div class="row">{% endif %}
                     <div class="col-3">
-						<a href="link/{{ link.id }}" name="link">
+						<a href="{% url 'detail' link.content_type link.id %}" name="link">
 							<div class="card mw-50">
 								<div class="embed-responsive embed-responsive-16by9">
 									<iframe src="{{ link.link }}" class="embed-responsive-item" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

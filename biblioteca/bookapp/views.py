@@ -1,10 +1,11 @@
-from re import A
 from django.shortcuts import redirect, render
 from django.http import HttpRequest, HttpResponse
-from django.views.generic import View
+from django.views.generic import View, ListView
 from bookapp.forms import *
 from .models import *
 from django.contrib import messages
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 class UploadFormsView(View):
@@ -17,6 +18,7 @@ class UploadFormsView(View):
         'videoForm': VideoForm,
         'ytLinkForm': LinkForm
     }
+
 
     def get(self, request):
         return render(request, 'upload.html', self.forms)
@@ -41,16 +43,71 @@ class UploadFormsView(View):
                 messages.error(request, form.error_messages[msg])
 
 
-class ContentDispatchView(View):
+class UpdateFormsView(View):
     """
-    Procesa las urls para el detalle de un contenido, brindando la página de ese contenido
+    Procesa la actualización de campos en objetos existentes
     """
+    forms = {
+        'file': FileForm,
+        'image': ImageForm,
+        'video': VideoForm,
+        'link': LinkForm
+    }
 
 
-    def get(self, request):
-        content_type = request.get_full_path().split('/')[1]
-        context = {'content': content_type}
-        return render(request, 'content.html', context)
+    def get(self, request, type, id):
+        """ Manda el formulario rellenado según el id del contenido """
+        context = {}
+        if 'file' in type:
+            context['media'] = File.objects.filter(id=id).first()
+            context['form'] = FileForm(instance=context['media'])
+        elif 'video' in type:
+            context['media'] = Video.objects.filter(id=id).first()
+            context['form'] = VideoForm(instance=context['media'])
+        elif 'image' in type:
+            context['media'] = Image.objects.filter(id=id).first()
+            context['form'] = ImageForm(instance=context['media'])
+        else:
+            context['media'] = Link.objects.filter(id=id).first()
+            context['form'] = LinkForm(instance=context['media'])
+        
+        return render(request, 'update.html', context)
+
+
+    def post(self, request, type, id):
+        """ Recibe y procesa la actualización """
+        form_name = self.forms[type]
+        if 'link' in type:
+            form = form_name(request.POST, instance=Link.objects.get(pk=id))
+        elif 'file' in type:
+            form = form_name(request.POST, request.FILES, instance=File.objects.get(pk=id))
+        elif 'video' in type:
+            form = form_name(request.POST, request.FILES, instance=Video.objects.get(pk=id))
+        else:
+            form = form_name(request.POST, request.FILES, instance=Image.objects.get(pk=id))
+
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        else:
+            for msg in form.error_messages:
+                messages.error(request, form.error_messages[msg])
+
+
+class SearchResultsView(ListView):
+    models = [File, Video, Image, Link]
+    template_name = 'search.html'
+
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        file_list = File.objects.filter(title__icontains=query).values('title', 'cover')
+        video_list = Video.objects.filter(title__icontains=query).values('title', 'video')
+        image_list = Image.objects.filter(title__icontains=query).values('title', 'img')
+        link_list = Link.objects.filter(Q(title__icontains=query)).values('title', 'link')
+        object_list = file_list.union(video_list).union(image_list).union(link_list)
+        print(object_list)
+        return object_list
 
 
 def homeView(request):
@@ -63,16 +120,15 @@ def homeView(request):
     return render(request, 'home.html', context)
 
 
-def file_detail(request, id):
-    content_type = request.get_full_path()
+def file_detail(request, type, id):
     context = {}
-    if 'file' in content_type:
+    if 'file' in type:
         context['media'] = File.objects.get(pk=id)
         context['is_file'] = True
-    elif 'video' in content_type:
+    elif 'video' in type:
         context['media'] = Video.objects.get(pk=id)
         context['is_video'] = True
-    elif 'image' in content_type:
+    elif 'image' in type:
         context['media'] = Image.objects.get(pk=id)
         context['is_image'] = True
     else:

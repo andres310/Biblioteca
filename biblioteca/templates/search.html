@@ -4,9 +4,40 @@
     <div>
         <ul>
             {% for object in object_list %}
-                <li>
-                    {{ object.title }}
-                </li>
+            <a href="">
+                <div class="card mw-50">
+                    {% if object.content_type == 'video' %}
+                        <a href="{{ object.video.url }}"></a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ object.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ object.author}}</h6>
+                        </div>
+                    {% elif object.content_type == 'file' %}
+                        <img src="{{ object.cover.url }}" alt="{{ object.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ object.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ object.author}}</h6>
+                        </div>
+                    {% else %}
+                        {% if object.content_type == 'image' %}
+                            <img src="{{ object.img.url }}" alt="{{ object.title }}">
+                        {% else %}
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe src="{{ link.link }}"
+                                        class="embed-responsive-item"
+                                        title="YouTube video player"
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen>
+                                </iframe>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ object.title }}</h5>
+                        </div>
+                    {% endif %}
+                </div>
+            </a>
             {% endfor %}
         </ul>
     </div>
