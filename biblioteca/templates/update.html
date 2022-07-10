@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}{{ media.title }}{% endblock %}
+{% block content %}
+<br>
+<div class="container">
+    <form method="POST" action="{% url 'update' media.content_type media.id %}" class="mt-2" enctype="multipart/form-data" autocomplete="off">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+    </form>
+</div>
+{% endblock %}

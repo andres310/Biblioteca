@@ -1,30 +1,26 @@
 from django import forms
-
-# Formulario para subir un Libro PDF
-class UploadFileForm(forms.Form):
-    title = forms.CharField(label='Titulo')
-    author = forms.CharField(label='Autor')
-    summary = forms.Textarea()
-    keywords = forms.CharField(label='Palabras Clave')
-    publication_date = forms.DateField(label='Fecha de publicación')
-    cover = forms.ImageField(label='Portada') 
-    file_upload = forms.FileField()
+from .models import *
 
 
-# Formulario para una imagen
-class UploadImageForm(forms.Form):
-    title = forms.CharField(label='Titulo')
-    keywords = forms.CharField(label='Palabras Clave')
-    publication_date = forms.DateField(label='Fecha de publicación')
-    image = forms.ImageField()
+class FileForm(forms.ModelForm):
+    class Meta():
+        model = File
+        fields = ('title', 'author', 'summary', 'file', 'cover')
 
 
-# Formulario para subir un video
-class UploadVideoForm(forms.Form):
-    title = forms.CharField(label='Titulo')
-    author = forms.CharField(label='Autor')
-    summary = forms.Textarea()
-    keywords = forms.CharField(label='Palabras Clave')
-    publication_date = forms.DateField(label='Fecha de publicación')
-    thumbnail = forms.ImageField(label='Miniatura')
-    video = forms.FileField()
+class VideoForm(forms.ModelForm):
+    class Meta():
+        model = Video
+        fields = ('title', 'author', 'summary', 'video')
+
+
+class ImageForm(forms.ModelForm):
+    class Meta():
+        model = Image
+        fields = ('title', 'img')
+
+
+class LinkForm(forms.ModelForm):
+    class Meta():
+        model = Link
+        fields = ('title', 'link')
