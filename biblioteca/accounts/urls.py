@@ -3,5 +3,6 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
-    path('', include('django.contrib.auth.urls'))
+
+    path('signup/', views.SignUpView.as_view(), name='signup')
 ]
