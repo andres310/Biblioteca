@@ -4,7 +4,8 @@ from django.core.exceptions import ValidationError
 
 def validate_file_extension(value):
     """
-    Función que valida las extemsiones permitidas para los archivos
+    Función que valida las extemsiones permitidas para los archivos las cuales son:
+    .pdf, .docx, .xslx, .xslm, .xslb, .xltx
     """
     extension = os.path.splitext(value.name)[1]
     valid_extensions = ['.pdf', '.docx', '.xslx', '.xslm', '.xlsb', '.xltx']
@@ -14,7 +15,8 @@ def validate_file_extension(value):
 
 def validate_image_extension(value):
     """
-    Función que valida las extensiones permitidas para las imagenes
+    Función que valida las extensiones permitidas para las imagenes las cuales son:
+    .png, .jpg y .jpeg
     """
     extension = os.path.splitext(value.name)[1]
     valid_extensions = ['.png', '.jpg', '.jpeg']
@@ -24,7 +26,8 @@ def validate_image_extension(value):
 
 def validate_video_extension(value):
     """
-    Función que valida las extensiones permitidas para videos
+    Función que valida las extensiones permitidas para videos las cuales son:
+    .mp4 y .webm
     """
     extension = os.path.splitext(value.name)[1]
     valid_extensions = ['.mp4', '.webm']

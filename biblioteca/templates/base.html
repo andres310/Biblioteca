@@ -27,6 +27,8 @@
                         <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesi&oacute;n</a></li>
                     </ul>
                 </div>
+                {% else %}
+                <a href="{% url 'login' %}">Iniciar Sesi&oacute;n</a>
                 {% endif %}
             </div>
         </nav>

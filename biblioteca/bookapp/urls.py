@@ -13,5 +13,7 @@ urlpatterns = [
     # URL para subir contenido
     path('upload/', UploadFormsView.as_view(), name='upload'),
     # URL para busqueda de contenido
-    path('search/', SearchResultsView.as_view(), name='search')
+    path('search/', SearchResultsView.as_view(), name='search'),
+    # URL para crear, editar y eliminar imagenes del carrusel
+    path('carousel/', CarouselListView.as_view(), name='carousel'),
 ]

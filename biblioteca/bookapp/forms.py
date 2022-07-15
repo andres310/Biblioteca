@@ -24,3 +24,9 @@ class LinkForm(forms.ModelForm):
     class Meta():
         model = Link
         fields = ('title', 'link')
+
+
+class CarouselForm(forms.ModelForm):
+    class Meta():
+        model = Carousel
+        fields = ('img',)

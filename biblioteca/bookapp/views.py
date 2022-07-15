@@ -1,3 +1,4 @@
+from turtle import title
 from django.shortcuts import redirect, render
 from django.http import HttpRequest, HttpResponse
 from django.views.generic import View, ListView
@@ -16,7 +17,8 @@ class UploadFormsView(View):
         'fileForm': FileForm,
         'imageForm': ImageForm,
         'videoForm': VideoForm,
-        'ytLinkForm': LinkForm
+        'ytLinkForm': LinkForm,
+        'carouselForm': CarouselForm,
     }
 
 
@@ -51,7 +53,8 @@ class UpdateFormsView(View):
         'file': FileForm,
         'image': ImageForm,
         'video': VideoForm,
-        'link': LinkForm
+        'link': LinkForm,
+        'carousel': CarouselForm
     }
 
 
@@ -67,6 +70,9 @@ class UpdateFormsView(View):
         elif 'image' in type:
             context['media'] = Image.objects.filter(id=id).first()
             context['form'] = ImageForm(instance=context['media'])
+        elif 'carousel' in type:
+            context['media'] = Carousel.objects.filter(id=id).first()
+            context['form'] = CarouselForm(instance=context['media'])
         else:
             context['media'] = Link.objects.filter(id=id).first()
             context['form'] = LinkForm(instance=context['media'])
@@ -83,6 +89,8 @@ class UpdateFormsView(View):
             form = form_name(request.POST, request.FILES, instance=File.objects.get(pk=id))
         elif 'video' in type:
             form = form_name(request.POST, request.FILES, instance=Video.objects.get(pk=id))
+        elif 'carousel' in type:
+            form = form_name(request.POST, request.FILES, instance=Carousel.objects.get(pk=id))
         else:
             form = form_name(request.POST, request.FILES, instance=Image.objects.get(pk=id))
 
@@ -95,19 +103,48 @@ class UpdateFormsView(View):
 
 
 class SearchResultsView(ListView):
-    models = [File, Video, Image, Link]
+    """
+    Procesa y muestra los resultados de una busquéda
+    """
     template_name = 'search.html'
+    #context_object_name = 'results'
+    model = File
 
+    def get_context_data(self, **kwargs):
+        """
+        Devuelve un diccionario con los resultados de la busqueda
+        que son querysets de cada tipo de contenido
+        """
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get('q')
+        context.update({
+            'query': query,
+            'videos': Video.objects.filter(title__icontains=query),
+            'images': Image.objects.filter(title__icontains=query),
+            'links': Link.objects.filter(title__icontains=query)
+        })
+        print(context)
+        return context
 
+    # Funcion que no se puede dejar vacia
     def get_queryset(self):
         query = self.request.GET.get('q')
-        file_list = File.objects.filter(title__icontains=query).values('title', 'cover')
-        video_list = Video.objects.filter(title__icontains=query).values('title', 'video')
-        image_list = Image.objects.filter(title__icontains=query).values('title', 'img')
-        link_list = Link.objects.filter(Q(title__icontains=query)).values('title', 'link')
-        object_list = file_list.union(video_list).union(image_list).union(link_list)
-        print(object_list)
-        return object_list
+        return File.objects.filter(title__icontains=query)
+    
+
+
+class CarouselListView(ListView):
+    """
+    Maneja la creación, actualización y eliminación de imagenes que aparecen en el carrusel
+    de la página de inicio
+    """
+    model = Carousel
+    template_name = 'carousel.html'
+
+    # Sobreescribe le metodo para regresar un diccionario con las instancias de Carousel
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 def homeView(request):
@@ -115,7 +152,8 @@ def homeView(request):
         'files': File.objects.all(),
         'videos': Video.objects.all(),
         'images': Image.objects.all(),
-        'links': Link.objects.all()
+        'links': Link.objects.all(),
+        'carousel_img': Carousel.objects.all(),
     }
     return render(request, 'home.html', context)
 
@@ -139,13 +177,14 @@ def file_detail(request, type, id):
 
 def delete_file(request, type, id):
     try:
-        content_type = type
-        if 'file' in content_type:
+        if 'file' in type:
             content_type = File.objects.get(pk=id)
-        elif 'video' in content_type:
+        elif 'video' in type:
             content_type = Video.objects.get(pk=id)
-        elif 'image' in content_type:
+        elif 'image' in type:
             content_type = Image.objects.get(pk=id)
+        elif 'carousel' in type:
+            content_type = Carousel.objects.get(pk=id)
         else:
             content_type = Link.objects.get(pk=id)
     except content_type.DoesNotExist:

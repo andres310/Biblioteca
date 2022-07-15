@@ -11,7 +11,27 @@
 		color: #0d6efd
 	}
 </style>
-    <div class="container-fluid">
+<div class="carousel slide" id="carrusel" data-bs-ride="carousel">
+
+	<div class="carousel-inner">
+		{% for img in carousel_img %}
+			{% if forloop.first %}
+			<div class="carousel-item active">
+			{% else %}
+			<div class="carousel-item">
+			{% endif %}
+				<img src="{{ img.img.url }}" class="d-block w-100">
+			</div>
+		{% endfor %}
+		<button class="carousel-control-prev" type="button" data-bs-target="#carrusel" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#carrusel" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		</button>
+	</div>
+</div>
+    <!--div class="container-fluid">
         <img src="{% static 'img/header.jpg' %}" class="img-fluid mx-auto d-block" alt="muchos libros" style="
                 width: 100%;
                 height: auto;
@@ -20,7 +40,7 @@
                 object-position: top left;">
     </div>
     <br>
-    <section class="container-sm">
+    <section class="container-sm"-->
         <!--INICIO FILTROS-->
         <!--button type="button" class="btn btn-primary" data-bs-target="#offcanvasFiltros" data-bs-toggle="offcanvas" aria-controls="offCanvasFiltros">
             Filtros

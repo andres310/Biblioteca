@@ -56,6 +56,12 @@
                 <h3>Registrar un administrador</h3>
             </a>
         </div>
+        <div class="img-card">
+            <a href="#carruselModal" id="carrusel" data-bs-toggle="modal" role="button" aria-expanded="false" aria-controls="carruselModal">
+                <img src="{% static 'img/carousel.png' %}" class="img-thumbnail" alt="Carrusel">
+                <h3>Carrusel</h3>
+            </a>
+        </div>
     </section>
 </section>
 <!--INICIO MODAL-->
@@ -72,11 +78,11 @@
                         {% csrf_token %}
                         {{ videoForm.as_p }}
                         <input type="hidden" name="name" value="videoForm">
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="save btn btn-primary">Subir Video</button>
-                        </div>
                     </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="save btn btn-primary">Subir Video</button>
+                    </div>
                 </section>
             </div>
         </div>
@@ -142,6 +148,30 @@
                         {{ imageForm.as_p }}
                         <input type="hidden" name="name" value="imageForm">
                         <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="save btn btn-primary">Subir Imagen</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="carruselModal" tabindex="-1" aria-labelledby="carruselModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="carruselModalLabel">Subir Imagen Carrusel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <section class="d-flex justify-content-center">
+                    <form method="post" action="." class="post-form mt-2" enctype="multipart/form-data" autocomplete="off">
+                        {% csrf_token %}
+                        {{ carouselForm.as_p }}
+                        <input type="hidden" name="name" value="carouselForm">
+                        <div class="modal-footer">
+                            <a type="button" class="btn btn-success" href="{% url 'carousel' %}">Editar imagenes existentes</a>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="save btn btn-primary">Subir Imagen</button>
                         </div>

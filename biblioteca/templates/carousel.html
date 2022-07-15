@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Carrusel{% endblock %}
+{% block content %}
+<br>
+<div class="d-flex justify-content-center">
+    <br>
+    <ul class="list-group list-group-flush">
+    {% for carousel_img in object_list %}
+        <li class="list-group-item">
+            <img src="{{ carousel_img.img.url }}" class="img-thumbnail">
+            <a href="{% url 'delete' carousel_img.content_type carousel_img.id %}" class="btn btn-danger">Eliminar</a>
+            <a href="{% url 'update' carousel_img.content_type carousel_img.id %}" class="btn btn-primary">Editar</a>
+        </li>
+    {% empty %}
+        <h2>No hay imagenes que mostrar</h2>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

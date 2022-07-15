@@ -2,43 +2,68 @@
 {% block title %}Busqu&eacute;da{% endblock %}
 {% block content %}
     <div>
+        <h2>Resultados para "{{ query }}"</h2>
         <ul>
-            {% for object in object_list %}
-            <a href="">
-                <div class="card mw-50">
-                    {% if object.content_type == 'video' %}
-                        <a href="{{ object.video.url }}"></a>
+        {% for file in object_list %}
+            <li>
+                <a href="{% url 'detail' file.content_type file.id %}">
+                    <div class="card">
+                        <img src="{{ file.cover.url }}" alt="{{ file.title }}" style="width:100%; max-width:20rem; height:auto;">
+							<div class="card-body">
+								<h5 class="card-title">{{ file.title }}</h5>
+								<h6 class="card-subtitle mb-2 text-muted">{{ file.author }}</h6>
+							</div>
+                    </div>
+                </a>
+            </li>
+        {% empty %}
+            <h2>No hay resultados para archivos</h2>
+        {% endfor %}
+        {% for video in videos %}
+            <li>
+                <a href="{% url 'detail' video.content_type video.id %}">
+                    <div class="card mw-50">
+                        <a href="{{ video.video.url }}"></a>
                         <div class="card-body">
-                            <h5 class="card-title">{{ object.title }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ object.author}}</h6>
+                            <h5 class="card-title">{{ video.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ video.author}}</h6>
                         </div>
-                    {% elif object.content_type == 'file' %}
-                        <img src="{{ object.cover.url }}" alt="{{ object.title }}">
+                    </div>
+                </a>
+            </li>
+        {% empty %}
+            <h2>No hay resultados para videos</h2>
+        {% endfor %}
+        {% for img in images %}
+            <li>
+                <a href="{% url 'detail' img.content_type img.id %}">
+                    <div class="card mw-50">
+                        <img src="{{ img.img.url }}" class="card-img-top" alt="{{ img.title }}">
                         <div class="card-body">
-                            <h5 class="card-title">{{ object.title }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ object.author}}</h6>
+                            <h5 class="card-title">{{ img.title }}</h5>
                         </div>
-                    {% else %}
-                        {% if object.content_type == 'image' %}
-                            <img src="{{ object.img.url }}" alt="{{ object.title }}">
-                        {% else %}
-                            <div class="embed-responsive embed-responsive-16by9">
-                                <iframe src="{{ link.link }}"
-                                        class="embed-responsive-item"
-                                        title="YouTube video player"
-                                        frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowfullscreen>
-                                </iframe>
-                            </div>
-                        {% endif %}
+                    </div>
+                </a>
+            </li>
+        {% empty %}
+            <h2>No hay resultados para imagenes</h2>
+        {% endfor %}
+        {% for link in links %}
+            <li>
+                <a href="{% url 'detail' link.content_type link.id %}">
+                    <div class="card mw-50">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe src="{{ link.link }}" class="embed-responsive-item" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title">{{ object.title }}</h5>
+                            <h5 class="card-title">{{ link.title }}</h5>
                         </div>
-                    {% endif %}
-                </div>
-            </a>
-            {% endfor %}
+                    </div>
+                </a>
+            </li>
+        {% empty %}
+            <h2>No hay resultados para videos de YouTube</h2>
+        {% endfor %}
         </ul>
     </div>
 {% endblock %}
