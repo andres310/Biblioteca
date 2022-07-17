@@ -3,6 +3,7 @@ from .views import *
 from django.views.generic.base import TemplateView 
 
 urlpatterns = [
+    # URL para mostrar la página de inicio
     path('', homeView, name = 'home'),
     # URLs para visualizar el contenido
     path('<str:type>/<int:id>/', file_detail, name = 'detail'),

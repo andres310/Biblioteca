@@ -4,66 +4,46 @@
     <div>
         <h2>Resultados para "{{ query }}"</h2>
         <ul>
-        {% for file in object_list %}
-            <li>
-                <a href="{% url 'detail' file.content_type file.id %}">
-                    <div class="card">
-                        <img src="{{ file.cover.url }}" alt="{{ file.title }}" style="width:100%; max-width:20rem; height:auto;">
-							<div class="card-body">
-								<h5 class="card-title">{{ file.title }}</h5>
-								<h6 class="card-subtitle mb-2 text-muted">{{ file.author }}</h6>
-							</div>
-                    </div>
-                </a>
-            </li>
-        {% empty %}
-            <h2>No hay resultados para archivos</h2>
-        {% endfor %}
-        {% for video in videos %}
-            <li>
-                <a href="{% url 'detail' video.content_type video.id %}">
-                    <div class="card mw-50">
-                        <a href="{{ video.video.url }}"></a>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ video.title }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ video.author}}</h6>
-                        </div>
-                    </div>
-                </a>
-            </li>
-        {% empty %}
-            <h2>No hay resultados para videos</h2>
-        {% endfor %}
-        {% for img in images %}
-            <li>
-                <a href="{% url 'detail' img.content_type img.id %}">
-                    <div class="card mw-50">
-                        <img src="{{ img.img.url }}" class="card-img-top" alt="{{ img.title }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ img.title }}</h5>
-                        </div>
-                    </div>
-                </a>
-            </li>
-        {% empty %}
-            <h2>No hay resultados para imagenes</h2>
-        {% endfor %}
-        {% for link in links %}
-            <li>
-                <a href="{% url 'detail' link.content_type link.id %}">
-                    <div class="card mw-50">
+        <!--INICIO CARD DE CONTENIDO-->
+		{% for media in page_obj %}
+        <li>
+            <a href="{% url 'detail' media.content_type media.id %}">
+                <div class="card">
+                    {% if media.content_type == 'file' %}
+                        <img  class="card-img-top" src="{{ media.cover.url }}" alt="{{ media.title }}">
+                    {% elif media.content_type == 'video' %}
+                        <!--no c bro deberia añadir un thumbnail o algo xd-->
+                        <video width="320" height="auto">
+                            <source src="{{ media.video.url }}" type="video/mp4">
+                        </video>
+                    {% elif media.content_type == 'image' %}
+                        <img src="{{ media.img.url }}" alt="{{ media.title }}">
+                    {% else %}
                         <div class="embed-responsive embed-responsive-16by9">
-                            <iframe src="{{ link.link }}" class="embed-responsive-item" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe src="{{ media.link }}" 
+                                    class="embed-responsive-item" 
+                                    title="YouTube video player" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen></iframe>
                         </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ link.title }}</h5>
-                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ media.title }}</h5>
+                        {% if media.content_type == 'file' or 'video' %}
+                            <h6 class="card-subtitle mb-2 text-muted">{{ media.author }}</h6>
+                        {% endif %}
                     </div>
-                </a>
-            </li>
-        {% empty %}
-            <h2>No hay resultados para videos de YouTube</h2>
-        {% endfor %}
+                </div>
+            </a>
+        </li>
+		{% empty %}
+			<h5>No hay resultados para "{{ query }}" :(</h5>
+		{% endfor %}
+		<!--FIN CARD DE CONTENIDO-->
         </ul>
+        <!--INICIO PAGINACIÓN-->
+        {% include 'pagination.html' %}
+        <!--FIN PAGINACIÓN-->
     </div>
 {% endblock %}

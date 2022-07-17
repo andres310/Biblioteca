@@ -79,116 +79,50 @@
             </section>
         </div-->
         <!--FIN FILTROS-->
-        </section>
-        <section class="container-fluid">
-            <br>
-        	{% if files %}
-              {% for file in files %}
-                {% if forloop.first %}<div class="row">{% endif %}
-					<div class="col-3">
-						<a href="{% url 'detail' file.content_type file.id %}" name="file">
-							<div class="card mw-50">
-								<img src="{{ file.cover.url }}" alt="{{ file.title }}" style="width:100%; max-width:20rem; height:auto;">
-								<div class="card-body">
-									<h5 class="card-title">{{ file.title }}</h5>
-									<h6 class="card-subtitle mb-2 text-muted">{{ file.author }}</h6>
-								</div>
-							</div>
-						</a>
-					</div>
-                {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
-                {% if forloop.last %}</div>{% endif %}
-              {% endfor %}
-            {% else %}
-                <p>No hay archivos que mostrar</p>
-            {% endif %}
-                  <br>
-            {% if videos %}
-              {% for video in videos %}
-                {% if forloop.first %}<div class="row">{% endif %}
-						<div class="col-3">
-							<a href="{% url 'detail' video.content_type video.id %}" name="video">
-								<div class="card mw-50">
-									<a href="{{ video.video.url }}"></a>
-									<div class="card-body">
-										<h5 class="card-title">{{ video.title }}</h5>
-										<h6 class="card-subtitle mb-2 text-muted">{{ video.author}}</h6>
-									</div>
-								</div>
-							</a>
-						</div>
-                {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
-                {% if forloop.last %}</div>{% endif %}
-              {% endfor %}
-            {% else %}
-                <p>No hay videos que mostrar</p>
-            {% endif %}
-                  <br>
-            {% if images %}
-              {% for img in images %}
-                {% if forloop.first %}<div class="row">{% endif %}
-						<div class="col-3">
-							<a href="{% url 'detail' img.content_type img.id %}" name="img">
-								<div class="card mw-50">
-									<img src="{{ img.img.url }}" class="card-img-top" alt="{{ img.title }}">
-									<div class="card-body">
-										<h5 class="card-title">{{ img.title }}</h5>
-									</div>
-								</div>
-							</a>
-						</div>
-                {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
-                {% if forloop.last %}</div>{% endif %}
-              {% endfor %}
-            {% else %}
-                <p>No hay imagenes que mostrar</p>
-            {% endif %}
-                  <br>
-            {% if links %}
-              {% for link in links %}
-                {% if forloop.first %}<div class="row">{% endif %}
-                    <div class="col-3">
-						<a href="{% url 'detail' link.content_type link.id %}" name="link">
-							<div class="card mw-50">
-								<div class="embed-responsive embed-responsive-16by9">
-									<iframe src="{{ link.link }}" class="embed-responsive-item" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-								</div>
-								<div class="card-body">
-									<h5 class="card-title">{{ link.title }}</h5>
-								</div>
-							</div>
-						</a>
-                    </div>
-                {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
-                {% if forloop.last %}</div>{% endif %}
-              {% endfor %}
-            {% else %}
-                <p>No hay links que mostrar</p>
-            {% endif %}
-        </section>
-        <!--INICIO PAGINACION-->
+</section>
+    <section class="container-fluid">
         <br>
-        <div class="d-flex justify-content-center">
-            <nav aria-label="navegacion">
-                <ul class="pagination">
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
-            </nav>
-        </div>
-        <!--FIN PAGINACION-->
+        <!--INICIO CARD DE CONTENIDO-->
+		{% for media in page_obj %}
+		<a href="{% url 'detail' media.content_type media.id %}">
+			<div class="card">
+				{% if media.content_type == 'file' %}
+					<img  class="card-img-top" src="{{ media.cover.url }}" alt="{{ media.title }}">
+				{% elif media.content_type == 'video' %}
+					<!--no c bro deberia añadir un thumbnail o algo xd-->
+					<video width="320" height="auto">
+						<source src="{{ media.video.url }}" type="video/mp4">
+					</video>
+				{% elif media.content_type == 'image' %}
+					<img src="{{ media.img.url }}" alt="{{ media.title }}">
+				{% else %}
+					<div class="embed-responsive embed-responsive-16by9">
+						<iframe src="{{ media.link }}" 
+								class="embed-responsive-item" 
+								title="YouTube video player" 
+								frameborder="0" 
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+								allowfullscreen></iframe>
+					</div>
+				{% endif %}
+				<div class="card-body">
+					<h5 class="card-title">{{ media.title }}</h5>
+					{% if media.content_type == 'file' or 'video' %}
+						<h6 class="card-subtitle mb-2 text-muted">{{ media.author }}</h6>
+					{% endif %}
+				</div>
+			</div>
+		</a>
+		{% empty %}
+			<h5>No hay archivos que mostrar :(</h5>
+		{% endfor %}
+		<!--FIN CARD DE CONTENIDO-->	
     </section>
+    <!--INICIO PAGINACION-->
+    <br>
+    {% include 'pagination.html' %}
+    <!--FIN PAGINACION-->
+</section>
     <!--INICIO FOOTER-->
     <footer class="bg-primary text-white text-center text-lg-start">
         <!-- Grid container -->

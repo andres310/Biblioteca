@@ -107,8 +107,7 @@ class SearchResultsView(ListView):
     Procesa y muestra los resultados de una busquéda
     """
     template_name = 'search.html'
-    #context_object_name = 'results'
-    model = File
+    paginate_by = 1
 
     def get_context_data(self, **kwargs):
         """
@@ -119,17 +118,26 @@ class SearchResultsView(ListView):
         query = self.request.GET.get('q')
         context.update({
             'query': query,
-            'videos': Video.objects.filter(title__icontains=query),
-            'images': Image.objects.filter(title__icontains=query),
-            'links': Link.objects.filter(title__icontains=query)
         })
-        print(context)
         return context
 
     # Funcion que no se puede dejar vacia
     def get_queryset(self):
         query = self.request.GET.get('q')
-        return File.objects.filter(title__icontains=query)
+        objects = {
+            'file': File.objects.filter(title__icontains=query),
+            'video': Video.objects.filter(title__icontains=query),
+            'image': Image.objects.filter(title__icontains=query),
+            'link': Link.objects.filter(title__icontains=query),
+        }
+        queryset = []
+        # Junta los objetos en una lista
+        for key in objects:
+            queryset += list(objects[key])
+        if 'search' in self.request.get_full_path():
+            print(self.request.get_full_path())
+            print(self.request.path)
+        return queryset
     
 
 
@@ -153,9 +161,22 @@ def homeView(request):
         'videos': Video.objects.all(),
         'images': Image.objects.all(),
         'links': Link.objects.all(),
-        'carousel_img': Carousel.objects.all(),
     }
-    return render(request, 'home.html', context)
+
+    # Indica el número de objetos por página
+    paginate_by = 1
+
+    # Lista los objetos para su paginacion
+    object_list = []
+    for key in context:
+        object_list += list(context[key])
+
+    # Pagina los objetos del contexto
+    paginator = Paginator(object_list, paginate_by)
+    page_number = request.GET.get('page') or 1
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'home.html', {'page_obj': page_obj, 'carousel_img': Carousel.objects.all()})
 
 
 def file_detail(request, type, id):
