@@ -164,7 +164,7 @@ def homeView(request):
     }
 
     # Indica el número de objetos por página
-    paginate_by = 1
+    paginate_by = 20
 
     # Lista los objetos para su paginacion
     object_list = []
