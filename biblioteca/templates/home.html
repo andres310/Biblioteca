@@ -106,7 +106,7 @@
 					{% elif media.content_type == 'image' %}
 						<img class="card-img-top d-block w-100" src="{{ media.img.url }}" alt="{{ media.title }}">
 					{% else %}
-						<div class="embed-responsive embed-responsive-16by9">
+						<div class="ratio ratio-16x9">
 							<iframe src="{{ media.link }}" 
 								class="embed-responsive-item" 
 								title="YouTube video player" 
