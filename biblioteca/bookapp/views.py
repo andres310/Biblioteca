@@ -1,18 +1,19 @@
-from turtle import title
 from django.shortcuts import redirect, render
-from django.http import HttpRequest, HttpResponse
 from django.views.generic import View, ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from bookapp.forms import *
 from .models import *
 from django.contrib import messages
-from django.db.models import Q
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 
-class UploadFormsView(View):
+class UploadFormsView(LoginRequiredMixin, View):
     """
     Maneja y procesa los formularios que se le muestran al usuario
     """
+    login_url = '/accounts/login/' # URL a la que redirecciona en caso no se tengan credenciales al acceder
+
     forms = {
         'fileForm': FileForm,
         'imageForm': ImageForm,
@@ -45,10 +46,12 @@ class UploadFormsView(View):
                 messages.error(request, form.error_messages[msg])
 
 
-class UpdateFormsView(View):
+class UpdateFormsView(LoginRequiredMixin, View):
     """
     Procesa la actualización de campos en objetos existentes
     """
+    login_url = '/accounts/login/' # URL a la que redirecciona en caso no se tengan credenciales al acceder
+
     forms = {
         'file': FileForm,
         'image': ImageForm,
@@ -196,6 +199,7 @@ def file_detail(request, type, id):
     return render(request, 'content.html', context)
 
 
+@login_required(login_url='/accounts/login/')
 def delete_file(request, type, id):
     try:
         if 'file' in type:
