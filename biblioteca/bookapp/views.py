@@ -110,7 +110,7 @@ class SearchResultsView(ListView):
     Procesa y muestra los resultados de una busquéda
     """
     template_name = 'search.html'
-    paginate_by = 1
+    paginate_by = 20
 
     def get_context_data(self, **kwargs):
         """
