@@ -11,25 +11,24 @@
 		color: #0d6efd
 	}
 	.img-card-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        grid-gap: 4rem;
-        width: 100%;
-        max-width: 1280px;
-        margin: 0 auto;
-        margin-bottom: 6rem;
-    }
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				grid-gap: 4rem;
+				width: 100%;
+				max-width: 1280px;
+				margin: 0 auto;
+				margin-bottom: 6rem;
+		}
 </style>
 <div class="carousel slide" id="carrusel" data-bs-ride="carousel">
-
-	<div class="carousel-inner">
+	<div class="carousel-inner d-block w-100 h-auto" style="max-height: 70vh;">
 		{% for img in carousel_img %}
 			{% if forloop.first %}
 			<div class="carousel-item active">
 			{% else %}
 			<div class="carousel-item">
 			{% endif %}
-				<img src="{{ img.img.url }}" class="d-block w-100">
+				<img src="{{ img.img.url }}" class="w-100" style="object-fit: cover;">
 			</div>
 		{% endfor %}
 		<button class="carousel-control-prev" type="button" data-bs-target="#carrusel" data-bs-slide="prev">
@@ -40,58 +39,58 @@
 		</button>
 	</div>
 </div>
-    <!--div class="container-fluid">
-        <img src="{% static 'img/header.jpg' %}" class="img-fluid mx-auto d-block" alt="muchos libros" style="
-                width: 100%;
-                height: auto;
-                max-height: 40rem;
-                object-fit: cover;
-                object-position: top left;">
-    </div>
-    <br>
-    <section class="container-sm"-->
-        <!--INICIO FILTROS-->
-        <!--button type="button" class="btn btn-primary" data-bs-target="#offcanvasFiltros" data-bs-toggle="offcanvas" aria-controls="offCanvasFiltros">
-            Filtros
-        </button>
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFiltros" aria-labelledby="offcanvasFiltrosLabel">
-            <header class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasFiltrosLabel">Filtros</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </header>
-            <section class="offcanvas-body">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <h5>Formato</h5>
-                    </li>
-                    <li class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="video" aria-label="video">
-                        Video
-                    </li>
-                    <li class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="pdf" aria-label="pdf">
-                        PDF
-                    </li>
-                    <li class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="imagen" aria-label="imagen">
-                        Imagen
-                    </li>
-                    <li class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="word" aria-label="word">
-                        Word
-                    </li>
-                    <li class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="excel" aria-label="excel">
-                        Excel
-                    </li>
-                </ul>
-            </section>
-        </div-->
-        <!--FIN FILTROS-->
+		<!--div class="container-fluid">
+				<img src="{% static 'img/header.jpg' %}" class="img-fluid mx-auto d-block" alt="muchos libros" style="
+								width: 100%;
+								height: auto;
+								max-height: 40rem;
+								object-fit: cover;
+								object-position: top left;">
+		</div>
+		<br>
+		<section class="container-sm"-->
+				<!--INICIO FILTROS-->
+				<!--button type="button" class="btn btn-primary" data-bs-target="#offcanvasFiltros" data-bs-toggle="offcanvas" aria-controls="offCanvasFiltros">
+						Filtros
+				</button>
+				<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFiltros" aria-labelledby="offcanvasFiltrosLabel">
+						<header class="offcanvas-header">
+								<h5 class="offcanvas-title" id="offcanvasFiltrosLabel">Filtros</h5>
+								<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+						</header>
+						<section class="offcanvas-body">
+								<ul class="list-group list-group-flush">
+										<li class="list-group-item">
+												<h5>Formato</h5>
+										</li>
+										<li class="list-group-item">
+												<input class="form-check-input me-1" type="checkbox" value="video" aria-label="video">
+												Video
+										</li>
+										<li class="list-group-item">
+												<input class="form-check-input me-1" type="checkbox" value="pdf" aria-label="pdf">
+												PDF
+										</li>
+										<li class="list-group-item">
+												<input class="form-check-input me-1" type="checkbox" value="imagen" aria-label="imagen">
+												Imagen
+										</li>
+										<li class="list-group-item">
+												<input class="form-check-input me-1" type="checkbox" value="word" aria-label="word">
+												Word
+										</li>
+										<li class="list-group-item">
+												<input class="form-check-input me-1" type="checkbox" value="excel" aria-label="excel">
+												Excel
+										</li>
+								</ul>
+						</section>
+				</div-->
+				<!--FIN FILTROS-->
 </section>
-    <section class="container-fluid">
-        <br>
-        <!--INICIO CARD DE CONTENIDO-->
+		<section class="container-fluid">
+				<br>
+				<!--INICIO CARD DE CONTENIDO-->
 		<section class="img-card-grid align-middle">
 			{% for media in page_obj %}
 				<a href="{% url 'detail' media.content_type media.id %}">
@@ -128,82 +127,82 @@
 		</section>
 		
 		<!--FIN CARD DE CONTENIDO-->	
-    </section>
-    <!--INICIO PAGINACION-->
-    <br>
-    {% include 'pagination.html' %}
-    <!--FIN PAGINACION-->
+		</section>
+		<!--INICIO PAGINACION-->
+		<br>
+		{% include 'pagination.html' %}
+		<!--FIN PAGINACION-->
 </section>
-    <!--INICIO FOOTER-->
-    <footer class="bg-primary text-white text-center text-lg-start">
-        <!-- Grid container -->
-        <div class="container p-4">
-          <!--Grid row-->
-          <div class="row">
-            <!--Grid column-->
-            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-              <h5 class="text-uppercase">Footer Content</h5>
-      
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
-                molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
-                voluptatem veniam, est atque cumque eum delectus sint!
-              </p>
-            </div>
-            <!--Grid column-->
-      
-            <!--Grid column-->
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-              <h5 class="text-uppercase">Links</h5>
-      
-              <ul class="list-unstyled mb-0">
-                <li>
-                  <a href="#!" class="text-white">Link 1</a>
-                </li>
-                <li>
-                  <a href="#!" class="text-white">Link 2</a>
-                </li>
-                <li>
-                  <a href="#!" class="text-white">Link 3</a>
-                </li>
-                <li>
-                  <a href="#!" class="text-white">Link 4</a>
-                </li>
-              </ul>
-            </div>
-            <!--Grid column-->
-      
-            <!--Grid column-->
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-              <h5 class="text-uppercase mb-0">Links</h5>
-      
-              <ul class="list-unstyled">
-                <li>
-                  <a href="#!" class="text-white">Link 1</a>
-                </li>
-                <li>
-                  <a href="#!" class="text-white">Link 2</a>
-                </li>
-                <li>
-                  <a href="#!" class="text-white">Link 3</a>
-                </li>
-                <li>
-                  <a href="#!" class="text-white">Link 4</a>
-                </li>
-              </ul>
-            </div>
-            <!--Grid column-->
-          </div>
-          <!--Grid row-->
-        </div>
-        <!-- Grid container -->
-      
-        <!-- Copyright -->
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-          © 2020 Copyright:
-          <a class="text-white" href="https://mdbootstrap.com/">example.com</a>
-        </div>
-        <!-- Copyright -->
-      </footer>
-    <!--FIN FOOTER-->
+		<!--INICIO FOOTER-->
+		<footer class="bg-primary text-white text-center text-lg-start">
+				<!-- Grid container -->
+				<div class="container p-4">
+					<!--Grid row-->
+					<div class="row">
+						<!--Grid column-->
+						<div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+							<h5 class="text-uppercase">Footer Content</h5>
+			
+							<p>
+								Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
+								molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
+								voluptatem veniam, est atque cumque eum delectus sint!
+							</p>
+						</div>
+						<!--Grid column-->
+			
+						<!--Grid column-->
+						<div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+							<h5 class="text-uppercase">Links</h5>
+			
+							<ul class="list-unstyled mb-0">
+								<li>
+									<a href="#!" class="text-white">Link 1</a>
+								</li>
+								<li>
+									<a href="#!" class="text-white">Link 2</a>
+								</li>
+								<li>
+									<a href="#!" class="text-white">Link 3</a>
+								</li>
+								<li>
+									<a href="#!" class="text-white">Link 4</a>
+								</li>
+							</ul>
+						</div>
+						<!--Grid column-->
+			
+						<!--Grid column-->
+						<div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+							<h5 class="text-uppercase mb-0">Links</h5>
+			
+							<ul class="list-unstyled">
+								<li>
+									<a href="#!" class="text-white">Link 1</a>
+								</li>
+								<li>
+									<a href="#!" class="text-white">Link 2</a>
+								</li>
+								<li>
+									<a href="#!" class="text-white">Link 3</a>
+								</li>
+								<li>
+									<a href="#!" class="text-white">Link 4</a>
+								</li>
+							</ul>
+						</div>
+						<!--Grid column-->
+					</div>
+					<!--Grid row-->
+				</div>
+				<!-- Grid container -->
+			
+				<!-- Copyright -->
+				<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+					© 2020 Copyright:
+					<a class="text-white" href="https://mdbootstrap.com/">example.com</a>
+				</div>
+				<!-- Copyright -->
+			</footer>
+		<!--FIN FOOTER-->
 {% endblock %}
