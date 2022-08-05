@@ -2,24 +2,6 @@
 {% block title %}Inicio{% endblock %}
 {% load static %}
 {% block content %}
-<style>
-	a {
-		color: #000;
-		text-decoration: none;
-	}
-	a:hover {
-		color: #0d6efd
-	}
-	.img-card-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-				grid-gap: 4rem;
-				width: 100%;
-				max-width: 1280px;
-				margin: 0 auto;
-				margin-bottom: 6rem;
-		}
-</style>
 <div class="carousel slide" id="carrusel" data-bs-ride="carousel">
 	<div class="carousel-inner d-block w-100 h-auto" style="max-height: 70vh;">
 		{% for img in carousel_img %}
@@ -89,44 +71,10 @@
 				<!--FIN FILTROS-->
 </section>
 		<section class="container-fluid">
-				<br>
-				<!--INICIO CARD DE CONTENIDO-->
-		<section class="img-card-grid align-middle">
-			{% for media in page_obj %}
-				<a href="{% url 'detail' media.content_type media.id %}">
-					<div class="card">
-					{% if media.content_type == 'file' %}
-						<img class="card-img-top d-block w-100" src="{{ media.cover.url }}" alt="{{ media.title }}">
-					{% elif media.content_type == 'video' %}
-						<!--no c bro deberia añadir un thumbnail o algo xd-->
-						<video width="320" height="auto">
-							<source src="{{ media.video.url }}" type="video/mp4">
-						</video>
-					{% elif media.content_type == 'image' %}
-						<img class="card-img-top d-block w-100" src="{{ media.img.url }}" alt="{{ media.title }}">
-					{% else %}
-						<div class="ratio ratio-16x9">
-							<iframe src="{{ media.link }}"  
-								title="YouTube video player" 
-								frameborder="0" 
-								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-								allowfullscreen></iframe>
-						</div>
-					{% endif %}
-					<div class="card-body">
-						<h5 class="card-title">{{ media.title }}</h5>
-						{% if media.content_type == 'file' or 'video' %}
-							<h6 class="card-subtitle mb-2 text-muted">{{ media.author }}</h6>
-						{% endif %}
-					</div>
-					</div>
-				</a>
-			{% empty %}
-				<h5>No hay archivos que mostrar :(</h5>
-			{% endfor %}
-		</section>
-		
-		<!--FIN CARD DE CONTENIDO-->	
+			<br>
+			<!--INICIO CARD DE CONTENIDO-->
+			{% include 'img-card-grid.html' %}
+			<!--FIN CARD DE CONTENIDO-->	
 		</section>
 		<!--INICIO PAGINACION-->
 		<br>
