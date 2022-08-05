@@ -7,14 +7,21 @@
 		color: #0d6efd
 	}
 	.img-card-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-				grid-gap: 4rem;
-				width: 100%;
-				max-width: 1280px;
-				margin: 0 auto;
-				margin-bottom: 6rem;
+		display: grid;
+		grid-template-columns: repeat(4, minmax(220px, 1fr));
+		grid-gap: 4rem;
+		width: 100%;
+		max-width: 1280px;
+		margin: 0 auto;
+		margin-bottom: 6rem;
 	}
+    @media(max-width: 80em) {
+        .img-card-grid {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+    }
+    /*bien se hace una animación en para la transición de 4 a auto-fit*/
+    /* igual agregar transiciones para el hover de las cards */
 </style>
 <section class="img-card-grid align-middle">
     <!--INICIO CARD DE CONTENIDO-->
