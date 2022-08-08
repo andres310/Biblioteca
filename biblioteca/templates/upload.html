@@ -23,7 +23,20 @@
         text-align: center;
     }
 </style>
-
+<script defer>
+    // Hace que el texto de ayuda en los formularios aparezca pequeño y gris
+    // No funciona :(
+    const formatHelpText = () => {
+        let helpText = document.getElementsByClassName('helptext');
+        console.log(helpText);
+        for (let element of helpText) {
+            element.classList.add('text-muted');
+        }
+        console.log(helpText);
+    }
+    formatHelpText();
+</script>
+<!--PENDIENTE REFACTORIZAR ESTA WEA HORRIBLE QUE SE REPITE SIN SENTIDO-->
 <section class="container-fluid">
     <section class="img-card-grid align-middle">
         <div class="img-card">
@@ -62,6 +75,18 @@
                 <h3>Carrusel</h3>
             </a>
         </div>
+        <div class="img-card">
+            <a href="#categoriaModal" id="categoria" data-bs-toggle="modal" role="button" aria-expanded="false" aria-controls="categoriaModal">
+                <img src="{% static 'img/categoria.png' %}" class="img-thumbnail" alt="Categoría">
+                <h3>Categoría</h3>
+            </a>
+        </div>
+        <div class="img-card">
+            <a href="#palabraModal" id="palabra" data-bs-toggle="modal" role="button" aria-expanded="false" aria-controls="palabraModal">
+                <img src="{% static 'img/palabra.png' %}" class="img-thumbnail" alt="Palabras Clave">
+                <h3>Palabras clave</h3>
+            </a>
+        </div>
     </section>
 </section>
 <!--INICIO MODAL-->
@@ -78,11 +103,11 @@
                         {% csrf_token %}
                         {{ videoForm.as_p }}
                         <input type="hidden" name="name" value="videoForm">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="save btn btn-primary">Subir Video</button>
+                        </div>
                     </form>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="save btn btn-primary">Subir Video</button>
-                    </div>
                 </section>
             </div>
         </div>
@@ -174,6 +199,52 @@
                             <a type="button" class="btn btn-success" href="{% url 'carousel' %}">Editar imagenes existentes</a>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="save btn btn-primary">Subir Imagen</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoriaModalLabel">Crear nueva categoría</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <section class="d-flex justify-content-center">
+                    <form method="POST" action="" class="mt-2" autocomplete="off">
+                        {% csrf_token %}
+                        {{ categoryForm.as_p }}
+                        <input type="hidden" name="name" value="categoryForm">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="save btn btn-primary">Subir categoría</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="palabraModal" tabindex="-1" aria-labelledby="palabraModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagenModalLabel">Crear palabra clave</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <section class="d-flex justify-content-center">
+                    <form method="post" action="." class="post-form mt-2" autocomplete="off">
+                        {% csrf_token %}
+                        {{ metaKeywordForm.as_p }}
+                        <input type="hidden" name="name" value="metaKeywordForm">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="save btn btn-primary">Subir palabra clave</button>
                         </div>
                     </form>
                 </section>

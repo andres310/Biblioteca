@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import redirect, render
 from django.views.generic import View, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,6 +21,8 @@ class UploadFormsView(LoginRequiredMixin, View):
         'videoForm': VideoForm,
         'ytLinkForm': LinkForm,
         'carouselForm': CarouselForm,
+        'categoryForm': CategoryForm,
+        'metaKeywordForm': MetaKeywordForm
     }
 
 
@@ -30,7 +33,8 @@ class UploadFormsView(LoginRequiredMixin, View):
     def post(self, request):
         form_name = self.forms[request.POST.get('name')]
         # Si el formulario no lleva archivo
-        if form_name == 'ytLinkForm': # Bastante mejorable no voy a mentir xd
+        if request.FILES: # Bastante mejorable no voy a mentir xd
+            print(request.FILES, request.FILES == None)
             form = form_name(request.POST)
         # Si el formilario lleva archivo
         else:
@@ -57,13 +61,31 @@ class UpdateFormsView(LoginRequiredMixin, View):
         'image': ImageForm,
         'video': VideoForm,
         'link': LinkForm,
-        'carousel': CarouselForm
+        'carousel': CarouselForm,
+        'category': CategoryForm,
+        'meta_keyword': MetaKeywordForm
     }
 
+    models = {
+        'file': File,
+        'image': Image,
+        'video': Video,
+        'link': Link,
+        'carousel': Carousel,
+        'category': Category,
+        'meta_keyword': MetaKeyword
+    }
+
+    """
+    POR EL AMOR DE CRISTO HAY QUE REFACTORIZAR ESTO ANTES DE QUE ALGUIEN SALGA HERIDO
+    """
 
     def get(self, request, type, id):
         """ Manda el formulario rellenado según el id del contenido """
         context = {}
+        context['media'] = self.models[type].objects.filter(id=id).first()
+        context['form'] = self.forms[type](instance=context['media'])
+        """
         if 'file' in type:
             context['media'] = File.objects.filter(id=id).first()
             context['form'] = FileForm(instance=context['media'])
@@ -79,13 +101,18 @@ class UpdateFormsView(LoginRequiredMixin, View):
         else:
             context['media'] = Link.objects.filter(id=id).first()
             context['form'] = LinkForm(instance=context['media'])
-        
+        """
         return render(request, 'update.html', context)
 
 
     def post(self, request, type, id):
         """ Recibe y procesa la actualización """
         form_name = self.forms[type]
+        if request.FILES:
+            form = form_name(request.POST, request.FILES, instance=self.models[type].objects.get(pk=id))
+        else:
+            form = form_name(request.POST, instance=self.models[type].objects.get(pk=id))
+        """
         if 'link' in type:
             form = form_name(request.POST, instance=Link.objects.get(pk=id))
         elif 'file' in type:
@@ -96,7 +123,7 @@ class UpdateFormsView(LoginRequiredMixin, View):
             form = form_name(request.POST, request.FILES, instance=Carousel.objects.get(pk=id))
         else:
             form = form_name(request.POST, request.FILES, instance=Image.objects.get(pk=id))
-
+        """
         if form.is_valid():
             form.save()
             return redirect('home')
@@ -127,6 +154,7 @@ class SearchResultsView(ListView):
     # Funcion que no se puede dejar vacia
     def get_queryset(self):
         query = self.request.GET.get('q')
+        # BASTANTE REFACTORIZABLE, DEBERIA ARREGLAR ESTO PQ NO ESCALA MUY BIEN Y SE REPITE MUCHO
         objects = {
             'file': File.objects.filter(title__icontains=query),
             'video': Video.objects.filter(title__icontains=query),
@@ -182,6 +210,7 @@ def homeView(request):
     return render(request, 'home.html', {'page_obj': page_obj, 'carousel_img': Carousel.objects.all()})
 
 
+# BASTANTE REFACTORIZABLE NO VOY A MENTIR XDDD
 def file_detail(request, type, id):
     context = {}
     if 'file' in type:
@@ -199,6 +228,7 @@ def file_detail(request, type, id):
     return render(request, 'content.html', context)
 
 
+# PERO DIOS MIO ME QUIERO SACAR LOS OJOS COMO PUDE ESCRIBIR ESTO
 @login_required(login_url='/accounts/login/')
 def delete_file(request, type, id):
     try:

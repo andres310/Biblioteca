@@ -55,7 +55,11 @@
         </div>
     </a>
     {% empty %}
-        <h5>No hay resultados para "{{ query }}" :(</h5>
+        {% if query %}
+            <h5>No hay resultados para "{{ query }}" :(</h5>
+        {% else %}
+            <h5>No hay contenido que mostrar</h5>
+        {% endif %}
     {% endfor %}
     <!--FIN CARD DE CONTENIDO-->
 </section>
