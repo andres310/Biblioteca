@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Prueba{% endblock title %}
+{% block content %}
+<br>
+<div class="d-flex justify-content-center">
+    <br>
+    <ul class="list-group list-group-flush">
+    {% for obj in object_list %}
+        <li class="list-group-item">
+            {% if obj.content_type == 'carousel' %}
+                <img src="{{ obj.img.url }}" class="img-thumbnail">
+            {% else %}
+                <p>{{ obj }}</p>
+            {% endif %}
+            <a href="{% url 'delete' obj.content_type obj.id %}" class="btn btn-danger">Eliminar</a>
+            <a href="{% url 'update' obj.content_type obj.id %}" class="btn btn-primary">Editar</a>
+        </li>
+    {% empty %}
+        <h2>No hay contenido que mostrar</h2>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock content %}

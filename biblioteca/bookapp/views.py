@@ -32,18 +32,19 @@ class UploadFormsView(LoginRequiredMixin, View):
 
     def post(self, request):
         form_name = self.forms[request.POST.get('name')]
-        # Si el formulario no lleva archivo
+        # Si el formulario lleva archivo
         if request.FILES: # Bastante mejorable no voy a mentir xd
+            form = form_name(request.POST, request.FILES)
+        # Si el formulario NO lleva archivo
+        else:
             print(request.FILES, request.FILES == None)
             form = form_name(request.POST)
-        # Si el formilario lleva archivo
-        else:
-            form_name = self.forms[request.POST.get('name')]
-            form = form_name(request.POST, request.FILES)
 
+        # Valida el formulario
         if form.is_valid():
             form.save()
-            messages.success(request, 'El formulario se ha enviado correctamente')# quiza no se ve pq redirecciona muy rapido xd
+            # quiza no se ve pq redirecciona muy rapido xd
+            messages.success(request, 'El formulario se ha enviado correctamente')
             return redirect('upload')
         else:
             for msg in form.error_messages:
@@ -54,7 +55,8 @@ class UpdateFormsView(LoginRequiredMixin, View):
     """
     Procesa la actualización de campos en objetos existentes
     """
-    login_url = '/accounts/login/' # URL a la que redirecciona en caso no se tengan credenciales al acceder
+    # URL a la que redirecciona en caso no se tengan credenciales al acceder
+    login_url = '/accounts/login/'
 
     forms = {
         'file': FileForm,
@@ -108,8 +110,10 @@ class UpdateFormsView(LoginRequiredMixin, View):
     def post(self, request, type, id):
         """ Recibe y procesa la actualización """
         form_name = self.forms[type]
+        # Revisa si lleva archivos
         if request.FILES:
             form = form_name(request.POST, request.FILES, instance=self.models[type].objects.get(pk=id))
+        # Si no lleva archivos
         else:
             form = form_name(request.POST, instance=self.models[type].objects.get(pk=id))
         """
@@ -171,19 +175,39 @@ class SearchResultsView(ListView):
         return queryset
     
 
-
 class CarouselListView(ListView):
     """
-    Maneja la creación, actualización y eliminación de imagenes que aparecen en el carrusel
-    de la página de inicio
+    Maneja la actualización y eliminación de imagenes que aparecen en el carrusel
+    de la página de inicio. Retorna un diccionario 'object_list' al template
+    'listview.html' que contiene las instancias del modelo
     """
     model = Carousel
-    template_name = 'carousel.html'
+    template_name = 'listview.html'
 
     # Sobreescribe le metodo para regresar un diccionario con las instancias de Carousel
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class MetaKeywordsListView(ListView):
+    """
+    Maneja la actualización y eliminación de palabras clave
+    Retorna un diccionario 'object_list' al template 'listview.html' que contiene las instancias
+    del modelo
+    """
+    model = MetaKeyword
+    template_name = 'listview.html'
+
+
+class CategoryListView(ListView):
+    """
+    Maneja la actualización y eliminación de categorías
+    Retorna un diccionario 'object_list' al template 'listview.html' que contiene las instancias
+    del modelo
+    """
+    model = Category
+    template_name = 'listview.html'
 
 
 def homeView(request):
@@ -231,7 +255,18 @@ def file_detail(request, type, id):
 # PERO DIOS MIO ME QUIERO SACAR LOS OJOS COMO PUDE ESCRIBIR ESTO
 @login_required(login_url='/accounts/login/')
 def delete_file(request, type, id):
+    models = {
+        'file': File,
+        'image': Image,
+        'video': Video,
+        'link': Link,
+        'carousel': Carousel,
+        'category': Category,
+        'meta_keyword': MetaKeyword,
+    }
     try:
+        content_type = models[type].objects.get(pk=id)
+        """
         if 'file' in type:
             content_type = File.objects.get(pk=id)
         elif 'video' in type:
@@ -242,6 +277,7 @@ def delete_file(request, type, id):
             content_type = Carousel.objects.get(pk=id)
         else:
             content_type = Link.objects.get(pk=id)
+        """
     except content_type.DoesNotExist:
             messages.error(request,'El contenido que ha intentado eliminar no existe')
             return redirect('home')
