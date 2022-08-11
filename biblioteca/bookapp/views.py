@@ -210,7 +210,7 @@ class CategoryListView(ListView):
     template_name = 'listview.html'
 
 
-def homeView(request):
+def home_view(request):
     context = {
         'files': File.objects.all(),
         'videos': Video.objects.all(),
@@ -236,7 +236,18 @@ def homeView(request):
 
 # BASTANTE REFACTORIZABLE NO VOY A MENTIR XDDD
 def file_detail(request, type, id):
+    models = {
+        'file': File,
+        'image': Image,
+        'video': Video,
+        'link': Link,
+        'carousel': Carousel,
+        'category': Category,
+        'meta_keyword': MetaKeyword,
+    }
     context = {}
+    context['media'] = models[type].objects.get(pk=id)
+    """
     if 'file' in type:
         context['media'] = File.objects.get(pk=id)
         context['is_file'] = True
@@ -249,6 +260,7 @@ def file_detail(request, type, id):
     else:
         context['media'] = Link.objects.get(pk=id)
         context['is_link'] = True
+    """
     return render(request, 'content.html', context)
 
 

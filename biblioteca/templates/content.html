@@ -7,7 +7,7 @@
     <br>
     <h1 class="text-center">{{ media.title }}</h1>
     <div class="d-lg-flex flex-column align-items-center">
-        {% if is_file %}
+        {% if media.content_type == 'file' %}
             <div class="col-md-4 px-0">
                 <img src="{{ media.cover.url }}" class="img-fluid" alt="{{ media.title }}">
             </div>
@@ -17,7 +17,7 @@
                 <p class="lh-base">{{ media.summary }}</p>
                 <a class="btn btn-primary" type="button" href="{{ media.file.url }}">Leer</a>
             </div>
-        {% elif is_video %}
+        {% elif media.content_type == 'video' %}
             <video width="320" height="auto">
                 <source src="{{ media.video.url }}" type="video/mp4">
             </video>
@@ -25,7 +25,7 @@
                 <h5 class="lh-lg">{{ media.author }}</h5>
                 <p class="lh-base">{{ media.summary }}</p>
             </div>
-        {% elif is_image %}
+        {% elif media.content_type == 'image' %}
             <div class="d-flex align-items-center vw-25">
                 <img src="{{ media.img.url }}" class="img-fluid" alt="{{ media.title }}">
             </div>

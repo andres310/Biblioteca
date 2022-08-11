@@ -1,4 +1,3 @@
-from unicodedata import category
 from .validators import *
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -28,7 +27,7 @@ class Category(models.Model):
 class MetaKeyword(models.Model):
     """
     Representación de la tabla meta_keywords en la base de datos
-    Contiene las palabras claves (tags) para se usados por las
+    Contiene las palabras claves (tags) para ser usados por las
     demás tablas
     """
     keyword = models.CharField(verbose_name='Palabra clave', max_length=255, null=False)
@@ -60,6 +59,7 @@ class File(models.Model):
     cover = models.ImageField(verbose_name='Portada', upload_to='portadas/%y/%m/%d', validators=[validate_image_extension], null=True)
     keywords = models.ManyToManyField(MetaKeyword, verbose_name='Palabras clave')
     publication_date = models.DateField(auto_now_add=True)
+    original_cover = cover.upload_to if cover != None else None
 
     def __str__(self) -> str:
         return slugify(self.title)

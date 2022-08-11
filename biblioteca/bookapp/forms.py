@@ -21,6 +21,9 @@ class FileForm(forms.ModelForm):
     class Meta():
         model = File
         fields = ('category', 'title', 'author', 'summary', 'file', 'cover', 'keywords')
+        widgets = {
+            'keywords': forms.widgets.CheckboxSelectMultiple(),
+        }
 
 
 class VideoForm(forms.ModelForm):
@@ -29,6 +32,9 @@ class VideoForm(forms.ModelForm):
         fields = ('category', 'title', 'author', 'summary', 'video', 'keywords')
         help_texts = {
             'author': '*Este campo es opcional',
+        }
+        widgets = {
+            'keywords': forms.widgets.CheckboxSelectMultiple(),
         }
 
 
@@ -39,6 +45,9 @@ class ImageForm(forms.ModelForm):
         help_texts = {
             'author': '*Este campo es opcional',
         }
+        widgets = {
+            'keywords': forms.widgets.CheckboxSelectMultiple(),
+        }
 
 
 class LinkForm(forms.ModelForm):
@@ -48,6 +57,9 @@ class LinkForm(forms.ModelForm):
         help_texts = {
             'author': 'Este campo es opcional',
             'link': 'Copia el link que aparece al dar click sobre compartir y luego insertar',
+        }
+        widgets = {
+            'keywords': forms.widgets.CheckboxSelectMultiple(),
         }
 
 
