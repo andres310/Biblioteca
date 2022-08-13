@@ -11,43 +11,49 @@
             <div class="col-md-4 px-0">
                 <img src="{{ media.cover.url }}" class="img-fluid" alt="{{ media.title }}">
             </div>
-            <div class="col-md-8 px-50">
-                <br>
-                <h5 class="lh-lg">{{ media.author }}</h5>
-                <p class="lh-base">{{ media.summary }}</p>
-                <a class="btn btn-primary" type="button" href="{{ media.file.url }}">Leer</a>
-            </div>
         {% elif media.content_type == 'video' %}
             <video width="320" height="auto">
                 <source src="{{ media.video.url }}" type="video/mp4">
             </video>
-            <div class="col-md-8 px-50">
-                <h5 class="lh-lg">{{ media.author }}</h5>
-                <p class="lh-base">{{ media.summary }}</p>
-            </div>
         {% elif media.content_type == 'image' %}
             <div class="d-flex align-items-center vw-25">
                 <img src="{{ media.img.url }}" class="img-fluid" alt="{{ media.title }}">
             </div>
         {% else %}
-        <div class="ratio ratio-16x9">
-            <iframe 
-            src="{{ media.link }}" 
-            class="embed-responsive-item" 
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen></iframe>
-        </div>
+            <div class="ratio ratio-16x9">
+                <iframe 
+                src="{{ media.link }}" 
+                class="embed-responsive-item" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen></iframe>
+            </div>
         {% endif %}
+        <div class="col-md-8 px-50">
+            <br>
+            {% if media.author %}
+                <h5 class="lh-lg">{{ media.author }}</h5>
+            {% if media.summary %}
+                <p class="lh-base">{{ media.summary }}</p>
+            {% if media.file %}
+                <button type="button" class="btn btn-primary">
+                    <a class="text-decoration-none" href="{{ media.file.url }}">Leer</a>
+                </button>
+            {% endif %}
+        </div>
         {% if user.is_authenticated %}
-        <div class="d-flex">
-            <a href="{% url 'delete' media.content_type media.id %}" class="btn btn-danger">
-                Eliminar
-            </a>
-            <a href="{% url 'update' media.content_type media.id %}" class="btn btn-primary">
-                Editar
-            </a>
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-danger">
+                <a href="{% url 'delete' media.content_type media.id %}" class="text-decoration-none">
+                    Eliminar
+                </a>
+            </button>
+            <button type="button" class="btn btn-primary">
+                <a href="{% url 'update' media.content_type media.id %}" class="text-decoration-none">
+                    Editar
+                </a>
+            </button>
         </div>
         {% endif %}
     </div>

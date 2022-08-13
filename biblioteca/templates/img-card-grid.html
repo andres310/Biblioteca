@@ -32,23 +32,32 @@
                 <img  class="card-img-top" src="{{ media.cover.url }}" alt="{{ media.title }}">
             {% elif media.content_type == 'video' %}
                 <!--no c bro deberia añadir un thumbnail o algo xd-->
-                <video width="320" height="auto">
-                    <source src="{{ media.video.url }}" type="video/mp4">
-                </video>
+                {% if media.thumbnail %}
+                    <img class="card-img-top" src="{{ media.thumbnail.url }}" alt="{{ media.title }}">
+                {% else %}
+                    <video width="320" height="auto">
+                        <source src="{{ media.video.url }}" type="video/mp4">
+                    </video>
+                {% endif %}
+
             {% elif media.content_type == 'image' %}
                 <img src="{{ media.img.url }}" alt="{{ media.title }}">
             {% else %}
-                <div class="ratio ratio-16x9">
-                    <iframe src="{{ media.link }}"  
+                {% if media.thumbnail %}
+                    <img class="card-img-top" src="{{ media.thumbnail.url }}" alt="{{ media.title }}">
+                {% else %}
+                    <div class="ratio ratio-16x9">
+                        <iframe src="{{ media.link }}"  
                             title="YouTube video player" 
                             frameborder="0" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                             allowfullscreen></iframe>
-                </div>
+                    </div>
+                {% endif %}
             {% endif %}
             <div class="card-body">
                 <h5 class="card-title">{{ media.title }}</h5>
-                {% if media.content_type == 'file' or 'video' %}
+                {% if media.author %}
                     <h6 class="card-subtitle mb-2 text-muted">{{ media.author }}</h6>
                 {% endif %}
             </div>

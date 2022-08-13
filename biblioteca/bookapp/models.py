@@ -59,7 +59,6 @@ class File(models.Model):
     cover = models.ImageField(verbose_name='Portada', upload_to='portadas/%y/%m/%d', validators=[validate_image_extension], null=True)
     keywords = models.ManyToManyField(MetaKeyword, verbose_name='Palabras clave')
     publication_date = models.DateField(auto_now_add=True)
-    original_cover = cover.upload_to if cover != None else None
 
     def __str__(self) -> str:
         return slugify(self.title)
@@ -96,6 +95,7 @@ class Video(models.Model):
     author = models.CharField(verbose_name='Autor', max_length=255, null=False)
     summary = models.TextField(verbose_name='Descripción', null=True)
     video = models.FileField(verbose_name='Video', upload_to='videos/%y/%m/%d', validators=[validate_video_extension], null=False)
+    thumbnail = models.ImageField(verbose_name='Miniatura', upload_to='miniaturas/videos', null=True, blank=True, validators=[validate_image_extension])
     keywords = models.ManyToManyField(MetaKeyword,  verbose_name='Palabras clave')
 
     def __str__(self) -> str:
@@ -162,6 +162,7 @@ class Link(models.Model):
     title = models.CharField(verbose_name='Título', max_length=255, null=False)
     author = models.CharField(verbose_name='Autor', max_length=255, null=True, blank=True)
     link = models.URLField(verbose_name='Link', null=False)
+    thumbnail = models.ImageField(verbose_name='Miniatura', upload_to='miniaturas/links', null=True, blank=True, validators=[validate_image_extension])
     keywords = models.ManyToManyField(MetaKeyword, verbose_name='Palabras clave')
 
     def __str__(self) -> str:
