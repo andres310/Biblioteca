@@ -21,66 +21,41 @@
 		</button>
 	</div>
 </div>
-		<!--div class="container-fluid">
-				<img src="{% static 'img/header.jpg' %}" class="img-fluid mx-auto d-block" alt="muchos libros" style="
-								width: 100%;
-								height: auto;
-								max-height: 40rem;
-								object-fit: cover;
-								object-position: top left;">
-		</div>
-		<br>
-		<section class="container-sm"-->
-				<!--INICIO FILTROS-->
-				<!--button type="button" class="btn btn-primary" data-bs-target="#offcanvasFiltros" data-bs-toggle="offcanvas" aria-controls="offCanvasFiltros">
-						Filtros
-				</button>
-				<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFiltros" aria-labelledby="offcanvasFiltrosLabel">
-						<header class="offcanvas-header">
-								<h5 class="offcanvas-title" id="offcanvasFiltrosLabel">Filtros</h5>
-								<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-						</header>
-						<section class="offcanvas-body">
-								<ul class="list-group list-group-flush">
-										<li class="list-group-item">
-												<h5>Formato</h5>
-										</li>
-										<li class="list-group-item">
-												<input class="form-check-input me-1" type="checkbox" value="video" aria-label="video">
-												Video
-										</li>
-										<li class="list-group-item">
-												<input class="form-check-input me-1" type="checkbox" value="pdf" aria-label="pdf">
-												PDF
-										</li>
-										<li class="list-group-item">
-												<input class="form-check-input me-1" type="checkbox" value="imagen" aria-label="imagen">
-												Imagen
-										</li>
-										<li class="list-group-item">
-												<input class="form-check-input me-1" type="checkbox" value="word" aria-label="word">
-												Word
-										</li>
-										<li class="list-group-item">
-												<input class="form-check-input me-1" type="checkbox" value="excel" aria-label="excel">
-												Excel
-										</li>
-								</ul>
-						</section>
-				</div-->
-				<!--FIN FILTROS-->
-</section>
-		<section class="container-fluid">
-			<br>
-			<!--INICIO CARD DE CONTENIDO-->
-			{% include 'img-card-grid.html' %}
-			<!--FIN CARD DE CONTENIDO-->	
+<!--INICIO FILTROS-->
+<section class="container-sm">
+	<button type="button" class="btn btn-primary" data-bs-target="#offcanvasFiltros" data-bs-toggle="offcanvas" aria-controls="offCanvasFiltros">
+		Filtros
+	</button>
+	<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFiltros" aria-labelledby="offcanvasFiltrosLabel">
+		<header class="offcanvas-header">
+			<h5 class="offcanvas-title" id="offcanvasFiltrosLabel">Filtros</h5>
+			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</header>
+		<section class="offcanvas-body">
+			<h5>Categorías</h5>
+			{% for category in categories %}
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">
+						<a class="text-decoration-none" href="{% url 'home_filter' category.id %}">
+							{{ category }}
+						</a>
+					</li>
+				</ul>
+			{% endfor %}
 		</section>
-		<!--INICIO PAGINACION-->
-		<br>
-		{% include 'pagination.html' %}
-		<!--FIN PAGINACION-->
+	</div>
 </section>
+<!--FIN FILTROS-->
+<section class="container-fluid">
+	<br>
+	<!--INICIO CARD DE CONTENIDO-->
+	{% include 'img-card-grid.html' %}
+	<!--FIN CARD DE CONTENIDO-->	
+</section>
+<!--INICIO PAGINACION-->
+<br>
+{% include 'pagination.html' %}
+<!--FIN PAGINACION-->
 		<!--INICIO FOOTER-->
 		<footer class="bg-primary text-white text-center text-lg-start">
 				<!-- Grid container -->
@@ -153,4 +128,4 @@
 				<!-- Copyright -->
 			</footer>
 		<!--FIN FOOTER-->
-{% endblock %}
+{% endblock content %}

@@ -5,6 +5,8 @@ from django.views.generic.base import TemplateView
 urlpatterns = [
     # URL para mostrar la página de inicio
     path('', home_view, name = 'home'),
+    # URLs para filtrar por categoria la página de inicio
+    path('<int:filter_by>', home_view_filter, name = 'home_filter'),
     # URLs para visualizar el contenido
     path('<str:type>/<int:id>/', file_detail, name = 'detail'),
     # URLs para eliminar un contenido

@@ -6,6 +6,7 @@ from .models import *
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 
 class UploadFormsView(LoginRequiredMixin, View):
@@ -159,18 +160,24 @@ class SearchResultsView(ListView):
         query = self.request.GET.get('q')
         # BASTANTE REFACTORIZABLE, DEBERIA ARREGLAR ESTO PQ NO ESCALA MUY BIEN Y SE REPITE MUCHO
         objects = {
-            'file': File.objects.filter(title__icontains=query),
-            'video': Video.objects.filter(title__icontains=query),
-            'image': Image.objects.filter(title__icontains=query),
-            'link': Link.objects.filter(title__icontains=query),
+            'file': File.objects.filter(
+                Q(title__icontains=query) | Q(author__icontains=query) | Q(keywords__icontains=query)
+                ),
+            'video': Video.objects.filter(
+                Q(title__icontains=query) | Q(author__icontains=query) | Q(keywords__icontains=query)
+            ),
+            'image': Image.objects.filter(
+                Q(title__icontains=query) | Q(author__icontains=query) | Q(keywords__icontains=query)
+            ),
+            'link': Link.objects.filter(
+                Q(title__icontains=query) | Q(author__icontains=query) | Q(keywords__icontains=query)
+            ),
         }
         queryset = []
         # Junta los objetos en una lista
         for key in objects:
             queryset += list(objects[key])
-        if 'search' in self.request.get_full_path():
-            print(self.request.get_full_path())
-            print(self.request.path)
+
         return queryset
     
 
@@ -210,6 +217,9 @@ class CategoryListView(ListView):
 
 
 def home_view(request):
+    """
+    Vista para la página de inicio
+    """
     context = {
         'files': File.objects.all(),
         'videos': Video.objects.all(),
@@ -230,7 +240,42 @@ def home_view(request):
     page_number = request.GET.get('page') or 1
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'home.html', {'page_obj': page_obj, 'carousel_img': Carousel.objects.all()})
+    return render(request, 'home.html', 
+        {'page_obj': page_obj, 
+        'carousel_img': Carousel.objects.all(),
+        'categories': Category.objects.all()})
+
+
+def home_view_filter(request, filter_by):
+    """
+    Vista para la página de inicio
+    el argumento filter_by sirve para filtrar
+    los objetos por categorías
+    """
+    context = {
+        'files': File.objects.filter(category__exact=filter_by),
+        'videos': Video.objects.filter(category__exact=filter_by),
+        'images': Image.objects.filter(category__exact=filter_by),
+        'links': Link.objects.filter(category__exact=filter_by),
+    }
+
+    # Indica el número de objetos por página
+    paginate_by = 20
+
+    # Lista los objetos para su paginacion
+    object_list = []
+    for key in context:
+        object_list += list(context[key])
+
+    # Pagina los objetos del contexto
+    paginator = Paginator(object_list, paginate_by)
+    page_number = request.GET.get('page') or 1
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'home.html', 
+        {'page_obj': page_obj, 
+        'carousel_img': Carousel.objects.all(),
+        'categories': Category.objects.all()})
 
 
 # BASTANTE REFACTORIZABLE NO VOY A MENTIR XDDD
