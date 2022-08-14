@@ -1,3 +1,5 @@
+from os import TMP_MAX
+from typing import Set
 from django.shortcuts import redirect, render
 from django.views.generic import View, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -7,6 +9,18 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import HttpResponse
+
+MODELS = {
+    'file': File,
+    'image': Image,
+    'video': Video,
+    'link': Link,
+    'carousel': Carousel,
+    'category': Category,
+    'meta_keyword': MetaKeyword
+}
+
 
 
 class UploadFormsView(LoginRequiredMixin, View):
@@ -37,7 +51,7 @@ class UploadFormsView(LoginRequiredMixin, View):
             form = form_name(request.POST, request.FILES)
         # Si el formulario NO lleva archivo
         else:
-            print(request.FILES, request.FILES == None)
+            print(request.FILES, request.FILES == None, 'AAAAAAAAAAAAAAAA')
             form = form_name(request.POST)
 
         # Valida el formulario
@@ -47,8 +61,9 @@ class UploadFormsView(LoginRequiredMixin, View):
             return redirect('upload')
         else:
             # Muestra errores en el formulario
-            for msg in form.error_messages:
-                messages.error(request, form.error_messages[msg])
+            for field, items in form.errors.items():
+                for item in items:
+                    messages.error(request, f'{field}: {item}')
 
 
 class UpdateFormsView(LoginRequiredMixin, View):
@@ -68,20 +83,10 @@ class UpdateFormsView(LoginRequiredMixin, View):
         'meta_keyword': MetaKeywordForm
     }
 
-    models = {
-        'file': File,
-        'image': Image,
-        'video': Video,
-        'link': Link,
-        'carousel': Carousel,
-        'category': Category,
-        'meta_keyword': MetaKeyword
-    }
-
     def get(self, request, type, id):
         """ Manda el formulario rellenado según el id del contenido """
         context = {}
-        context['media'] = self.models[type].objects.filter(id=id).first()
+        context['media'] = self.MODELS[type].objects.filter(id=id).first()
         context['form'] = self.forms[type](instance=context['media'])
         return render(request, 'update.html', context)
 
@@ -91,10 +96,10 @@ class UpdateFormsView(LoginRequiredMixin, View):
         form_name = self.forms[type]
         # Revisa si lleva archivos
         if request.FILES:
-            form = form_name(request.POST, request.FILES, instance=self.models[type].objects.get(pk=id))
+            form = form_name(request.POST, request.FILES, instance=self.MODELS[type].objects.get(pk=id))
         # Si no lleva archivos
         else:
-            form = form_name(request.POST, instance=self.models[type].objects.get(pk=id))
+            form = form_name(request.POST, instance=self.MODELS[type].objects.get(pk=id))
         
         # Valida el formulario
         if form.is_valid():
@@ -128,13 +133,14 @@ class SearchResultsView(ListView):
     # Funcion que no se puede dejar vacia
     def get_queryset(self):
         query = self.request.GET.get('q')
-        # BASTANTE REFACTORIZABLE, DEBERIA ARREGLAR ESTO PQ NO ESCALA MUY BIEN Y SE REPITE MUCHO
+        # Obtiene las palabras clave
         kw_q = MetaKeyword.objects.filter(keyword__icontains=query)
         kw = []
         if kw_q:
-            print(kw_q)
+            # Adjunta las palabras clave
             for k in kw_q:
                 kw.append(k.pk)
+
         objects = {
             'file': File.objects.filter(
                 Q(title__icontains=query) | Q(author__icontains=query) | Q(keywords__in=kw)
@@ -153,8 +159,14 @@ class SearchResultsView(ListView):
 
         # Junta los objetos en una lista
         for key in objects:
-            queryset += list(objects[key])
-
+            if objects[key]:
+                #queryset += list(objects[key])
+                for obj in list(objects[key]):
+                    if obj not in queryset:
+                        queryset.append(obj)
+                        print(queryset, '--', obj, '--', obj in queryset)
+                    else:
+                        print('FUERA', obj)
         return queryset
     
 
@@ -255,37 +267,23 @@ def home_view_filter(request, filter_by):
         'categories': Category.objects.all()})
 
 
-# BASTANTE REFACTORIZABLE NO VOY A MENTIR XDDD
 def file_detail(request, type, id):
-    models = {
-        'file': File,
-        'image': Image,
-        'video': Video,
-        'link': Link,
-        'carousel': Carousel,
-        'category': Category,
-        'meta_keyword': MetaKeyword,
-    }
+    """
+    Vista que obtiene los detalles de un archivo en especifico, a través de su id y
+    su tipo de archivo
+    """
     context = {}
-    context['media'] = models[type].objects.get(pk=id)
-
+    context['media'] = MODELS[type].objects.get(pk=id)
     return render(request, 'content.html', context)
 
 
-# PERO DIOS MIO ME QUIERO SACAR LOS OJOS COMO PUDE ESCRIBIR ESTO
 @login_required(login_url='/accounts/login/')
 def delete_file(request, type, id):
-    models = {
-        'file': File,
-        'image': Image,
-        'video': Video,
-        'link': Link,
-        'carousel': Carousel,
-        'category': Category,
-        'meta_keyword': MetaKeyword,
-    }
+    """
+    Vista que elimina un archivo sabiendo su tipo y id
+    """
     try:
-        content_type = models[type].objects.get(pk=id)
+        content_type = MODELS[type].objects.get(pk=id)
     except content_type.DoesNotExist:
             messages.error(request,'El contenido que ha intentado eliminar no existe')
             return redirect('home')

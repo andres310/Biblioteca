@@ -129,7 +129,7 @@ TIME_ZONE = 'America/El_Salvador'
 
 USE_I18N = True
 
-USE_L10N = True
+#USE_L10N = True Warning, este setting sera desfasado en la versión 5.0 de Django
 
 USE_TZ = True
 
