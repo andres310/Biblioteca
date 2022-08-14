@@ -32,10 +32,8 @@
         {% endif %}
         <div class="col-md-8 px-50">
             <br>
-            {% if media.author %}
-                <h5 class="lh-lg">{{ media.author }}</h5>
-            {% if media.summary %}
-                <p class="lh-base">{{ media.summary }}</p>
+            {% if media.author %}<h5 class="lh-lg">{{ media.author }}</h5>{% endif %}
+            {% if media.summary %}<p class="lh-base">{{ media.summary }}</p>{% endif %}
             {% if media.file %}
                 <button type="button" class="btn btn-primary">
                     <a class="text-decoration-none" href="{{ media.file.url }}">Leer</a>
@@ -59,4 +57,4 @@
     </div>
 </section>
 <!--FIN DETALLE CONTENIDO-->
-{% endblock %}
+{% endblock content %}

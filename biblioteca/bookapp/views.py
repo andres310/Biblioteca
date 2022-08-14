@@ -159,21 +159,28 @@ class SearchResultsView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         # BASTANTE REFACTORIZABLE, DEBERIA ARREGLAR ESTO PQ NO ESCALA MUY BIEN Y SE REPITE MUCHO
+        kw_q = MetaKeyword.objects.filter(keyword__icontains=query)
+        kw = []
+        if kw_q:
+            print(kw_q)
+            for k in kw_q:
+                kw.append(k.pk)
         objects = {
             'file': File.objects.filter(
-                Q(title__icontains=query) | Q(author__icontains=query) | Q(keywords__icontains=query)
+                Q(title__icontains=query) | Q(author__icontains=query) | Q(keywords__in=kw)
                 ),
             'video': Video.objects.filter(
-                Q(title__icontains=query) | Q(author__icontains=query) | Q(keywords__icontains=query)
+                Q(title__icontains=query) | Q(author__icontains=query) | Q(keywords__in=kw)
             ),
             'image': Image.objects.filter(
-                Q(title__icontains=query) | Q(author__icontains=query) | Q(keywords__icontains=query)
+                Q(title__icontains=query) | Q(author__icontains=query) | Q(keywords__in=kw)
             ),
             'link': Link.objects.filter(
-                Q(title__icontains=query) | Q(author__icontains=query) | Q(keywords__icontains=query)
+                Q(title__icontains=query) | Q(author__icontains=query) | Q(keywords__in=kw)
             ),
         }
         queryset = []
+
         # Junta los objetos en una lista
         for key in objects:
             queryset += list(objects[key])
