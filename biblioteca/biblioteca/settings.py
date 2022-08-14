@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from django.contrib.messages import constants as message_constants
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -72,6 +73,15 @@ TEMPLATES = [
         },
     },
 ]
+
+# CSS que aplica para los mensajes de alerta
+MESSAGE_TAGS = {
+    message_constants.DEBUG: 'dark',
+    message_constants.INFO: 'info',
+    message_constants.SUCCESS: 'success',
+    message_constants.WARNING: 'warning',
+    message_constants.ERROR: 'danger',
+}
 
 WSGI_APPLICATION = 'biblioteca.wsgi.application'
 

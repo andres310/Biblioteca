@@ -43,10 +43,10 @@ class UploadFormsView(LoginRequiredMixin, View):
         # Valida el formulario
         if form.is_valid():
             form.save()
-            # quiza no se ve pq redirecciona muy rapido xd
             messages.success(request, 'El formulario se ha enviado correctamente')
             return redirect('upload')
         else:
+            # Muestra errores en el formulario
             for msg in form.error_messages:
                 messages.error(request, form.error_messages[msg])
 
@@ -78,32 +78,11 @@ class UpdateFormsView(LoginRequiredMixin, View):
         'meta_keyword': MetaKeyword
     }
 
-    """
-    POR EL AMOR DE CRISTO HAY QUE REFACTORIZAR ESTO ANTES DE QUE ALGUIEN SALGA HERIDO
-    """
-
     def get(self, request, type, id):
         """ Manda el formulario rellenado según el id del contenido """
         context = {}
         context['media'] = self.models[type].objects.filter(id=id).first()
         context['form'] = self.forms[type](instance=context['media'])
-        """
-        if 'file' in type:
-            context['media'] = File.objects.filter(id=id).first()
-            context['form'] = FileForm(instance=context['media'])
-        elif 'video' in type:
-            context['media'] = Video.objects.filter(id=id).first()
-            context['form'] = VideoForm(instance=context['media'])
-        elif 'image' in type:
-            context['media'] = Image.objects.filter(id=id).first()
-            context['form'] = ImageForm(instance=context['media'])
-        elif 'carousel' in type:
-            context['media'] = Carousel.objects.filter(id=id).first()
-            context['form'] = CarouselForm(instance=context['media'])
-        else:
-            context['media'] = Link.objects.filter(id=id).first()
-            context['form'] = LinkForm(instance=context['media'])
-        """
         return render(request, 'update.html', context)
 
 
@@ -116,20 +95,11 @@ class UpdateFormsView(LoginRequiredMixin, View):
         # Si no lleva archivos
         else:
             form = form_name(request.POST, instance=self.models[type].objects.get(pk=id))
-        """
-        if 'link' in type:
-            form = form_name(request.POST, instance=Link.objects.get(pk=id))
-        elif 'file' in type:
-            form = form_name(request.POST, request.FILES, instance=File.objects.get(pk=id))
-        elif 'video' in type:
-            form = form_name(request.POST, request.FILES, instance=Video.objects.get(pk=id))
-        elif 'carousel' in type:
-            form = form_name(request.POST, request.FILES, instance=Carousel.objects.get(pk=id))
-        else:
-            form = form_name(request.POST, request.FILES, instance=Image.objects.get(pk=id))
-        """
+        
+        # Valida el formulario
         if form.is_valid():
             form.save()
+            messages.success(request, 'El formulario se ha actualizado correctamente')
             return redirect('home')
         else:
             for msg in form.error_messages:
@@ -298,20 +268,7 @@ def file_detail(request, type, id):
     }
     context = {}
     context['media'] = models[type].objects.get(pk=id)
-    """
-    if 'file' in type:
-        context['media'] = File.objects.get(pk=id)
-        context['is_file'] = True
-    elif 'video' in type:
-        context['media'] = Video.objects.get(pk=id)
-        context['is_video'] = True
-    elif 'image' in type:
-        context['media'] = Image.objects.get(pk=id)
-        context['is_image'] = True
-    else:
-        context['media'] = Link.objects.get(pk=id)
-        context['is_link'] = True
-    """
+
     return render(request, 'content.html', context)
 
 
@@ -329,18 +286,6 @@ def delete_file(request, type, id):
     }
     try:
         content_type = models[type].objects.get(pk=id)
-        """
-        if 'file' in type:
-            content_type = File.objects.get(pk=id)
-        elif 'video' in type:
-            content_type = Video.objects.get(pk=id)
-        elif 'image' in type:
-            content_type = Image.objects.get(pk=id)
-        elif 'carousel' in type:
-            content_type = Carousel.objects.get(pk=id)
-        else:
-            content_type = Link.objects.get(pk=id)
-        """
     except content_type.DoesNotExist:
             messages.error(request,'El contenido que ha intentado eliminar no existe')
             return redirect('home')

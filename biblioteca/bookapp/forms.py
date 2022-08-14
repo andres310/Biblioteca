@@ -5,13 +5,13 @@ from .models import *
 class CategoryForm(forms.ModelForm):
     class Meta():
         model = Category
-        fields = ('category',)
+        fields = '__all__'
 
 
 class MetaKeywordForm(forms.ModelForm):
     class Meta():
         model = MetaKeyword
-        fields = ('keyword',)
+        fields = '__all__'
         help_texts = {
             'keyword': '*Procura escribir con guiones y sin tildes. Ej: infografia-medio-ambiente',
         }
@@ -29,7 +29,7 @@ class FileForm(forms.ModelForm):
 class VideoForm(forms.ModelForm):
     class Meta():
         model = Video
-        fields = ('category', 'title', 'author', 'summary', 'video', 'keywords')
+        fields = '__all__'
         help_texts = {
             'author': '*Este campo es opcional',
         }
@@ -41,7 +41,7 @@ class VideoForm(forms.ModelForm):
 class ImageForm(forms.ModelForm):
     class Meta():
         model = Image
-        fields = ('category', 'title', 'author', 'img', 'keywords')
+        fields = '__all__'
         help_texts = {
             'author': '*Este campo es opcional',
         }
@@ -53,7 +53,7 @@ class ImageForm(forms.ModelForm):
 class LinkForm(forms.ModelForm):
     class Meta():
         model = Link
-        fields = ('category', 'title', 'author', 'link', 'keywords')
+        fields = '__all__'
         help_texts = {
             'author': 'Este campo es opcional',
             'link': 'Copia el link que aparece al dar click sobre compartir y luego insertar',
@@ -66,7 +66,7 @@ class LinkForm(forms.ModelForm):
 class CarouselForm(forms.ModelForm):
     class Meta():
         model = Carousel
-        fields = ('img',)
+        fields = '__all__'
         help_texts = {
             'img': '*Procura que las imágenes sean del mismo tamaño',
         }
