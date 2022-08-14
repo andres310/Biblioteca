@@ -160,13 +160,9 @@ class SearchResultsView(ListView):
         # Junta los objetos en una lista
         for key in objects:
             if objects[key]:
-                #queryset += list(objects[key])
                 for obj in list(objects[key]):
                     if obj not in queryset:
                         queryset.append(obj)
-                        print(queryset, '--', obj, '--', obj in queryset)
-                    else:
-                        print('FUERA', obj)
         return queryset
     
 
