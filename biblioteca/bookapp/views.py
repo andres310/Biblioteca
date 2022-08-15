@@ -159,6 +159,7 @@ class SearchResultsView(ListView):
 
         # Junta los objetos en una lista
         for key in objects:
+            # Evita que se repitan objetos
             if objects[key]:
                 for obj in list(objects[key]):
                     if obj not in queryset:
