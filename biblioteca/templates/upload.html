@@ -196,7 +196,11 @@
                         {{ carouselForm.as_p }}
                         <input type="hidden" name="name" value="carouselForm">
                         <div class="modal-footer">
-                            <a type="button" class="btn btn-success" href="{% url 'carousel' %}">Editar imagenes existentes</a>
+                            <button type="button" class="btn btn-success">
+                                <a class="text-decoration-none text-white" href="{% url 'carousel' %}">
+                                    Editar imagenes existentes
+                                </a>
+                            </button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="save btn btn-primary">Subir Imagen</button>
                         </div>
@@ -220,7 +224,11 @@
                         {{ categoryForm.as_p }}
                         <input type="hidden" name="name" value="categoryForm">
                         <div class="modal-footer">
-                            <a type="button" class="btn btn-success" href="{% url 'categories' %}">Editar categorías existentes</a>
+                            <button type="button" class="btn btn-success">
+                                <a class="text-decoration-none text-white" href="{% url 'categories' %}">
+                                    Editar categorías existentes
+                                </a>
+                            </button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="save btn btn-primary">Subir categoría</button>
                         </div>
@@ -244,7 +252,9 @@
                         {{ metaKeywordForm.as_p }}
                         <input type="hidden" name="name" value="metaKeywordForm">
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success"><a href="{% url 'keywords' %}">Editar palabras existentes</a></button>
+                            <button type="button" class="btn btn-success">
+                                <a href="{% url 'keywords' %}" class="text-decoration-none text-white">Editar palabras existentes</a>
+                            </button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="save btn btn-primary">Subir palabra clave</button>
                         </div>

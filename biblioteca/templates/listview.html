@@ -12,8 +12,16 @@
             {% else %}
                 <p>{{ obj }}</p>
             {% endif %}
-            <a href="{% url 'delete' obj.content_type obj.id %}" class="btn btn-danger">Eliminar</a>
-            <a href="{% url 'update' obj.content_type obj.id %}" class="btn btn-primary">Editar</a>
+            <button type="button" class="btn btn-danger">
+                <a href="{% url 'delete' obj.content_type obj.id %}" class="text-decoration-none text-white">
+                    Eliminar
+                </a>
+            </button>
+            <button type="button" class="btn btn-primary">
+                <a href="{% url 'update' obj.content_type obj.id %}" class="text-decoration-none text-white">
+                    Editar
+                </a>
+            </button>
         </li>
     {% empty %}
         <h2>No hay contenido que mostrar</h2>
