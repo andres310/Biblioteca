@@ -51,7 +51,6 @@ class UploadFormsView(LoginRequiredMixin, View):
             form = form_name(request.POST, request.FILES)
         # Si el formulario NO lleva archivo
         else:
-            print(request.FILES, request.FILES == None, 'AAAAAAAAAAAAAAAA')
             form = form_name(request.POST)
 
         # Valida el formulario
@@ -86,7 +85,7 @@ class UpdateFormsView(LoginRequiredMixin, View):
     def get(self, request, type, id):
         """ Manda el formulario rellenado según el id del contenido """
         context = {}
-        context['media'] = self.MODELS[type].objects.filter(id=id).first()
+        context['media'] = MODELS[type].objects.filter(id=id).first()
         context['form'] = self.forms[type](instance=context['media'])
         return render(request, 'update.html', context)
 
@@ -96,10 +95,10 @@ class UpdateFormsView(LoginRequiredMixin, View):
         form_name = self.forms[type]
         # Revisa si lleva archivos
         if request.FILES:
-            form = form_name(request.POST, request.FILES, instance=self.MODELS[type].objects.get(pk=id))
+            form = form_name(request.POST, request.FILES, instance=MODELS[type].objects.get(pk=id))
         # Si no lleva archivos
         else:
-            form = form_name(request.POST, instance=self.MODELS[type].objects.get(pk=id))
+            form = form_name(request.POST, instance=MODELS[type].objects.get(pk=id))
         
         # Valida el formulario
         if form.is_valid():
