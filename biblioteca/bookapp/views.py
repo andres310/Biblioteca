@@ -1,5 +1,3 @@
-from os import TMP_MAX
-from typing import Set
 from django.shortcuts import redirect, render
 from django.views.generic import View, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,8 +7,9 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponse
 
+
+# Gestiona los modelos para todas las vistas
 MODELS = {
     'file': File,
     'image': Image,
@@ -60,9 +59,14 @@ class UploadFormsView(LoginRequiredMixin, View):
             return redirect('upload')
         else:
             # Muestra errores en el formulario
+            print(form.errors.get_json_data())
+            for k in form.errors:
+                messages.error(request, f'{form.errors}')
+            """
             for field, items in form.errors.items():
                 for item in items:
                     messages.error(request, f'{field}: {item}')
+            """
 
 
 class UpdateFormsView(LoginRequiredMixin, View):
@@ -106,8 +110,10 @@ class UpdateFormsView(LoginRequiredMixin, View):
             messages.success(request, 'El formulario se ha actualizado correctamente')
             return redirect('home')
         else:
+            print(form.errors)
             for msg in form.error_messages:
                 messages.error(request, form.error_messages[msg])
+            #messages.error(request, form.error_messages)
 
 
 class SearchResultsView(ListView):

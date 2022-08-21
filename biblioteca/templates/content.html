@@ -40,21 +40,24 @@
                 </button>
             {% endif %}
         </div>
-        {% if user.is_authenticated %}
-        <div class="d-flex justify-content-between">
-            <button type="button" class="btn btn-danger">
-                <a href="{% url 'delete' media.content_type media.id %}" class="text-decoration-none text-white">
-                    Eliminar
-                </a>
-            </button>
-            <button type="button" class="btn btn-primary">
-                <a href="{% url 'update' media.content_type media.id %}" class="text-decoration-none text-white">
-                    Editar
-                </a>
-            </button>
-        </div>
-        {% endif %}
+
     </div>
+    <br>
+    {% if user.is_authenticated %}
+    <div class="d-flex justify-content-evenly">
+        <button type="button" class="btn btn-primary">
+            <a href="{% url 'update' media.content_type media.id %}" class="text-decoration-none text-white">
+                Editar
+            </a>
+        </button>
+        <button type="button" class="btn btn-danger">
+            <a href="{% url 'delete' media.content_type media.id %}" class="text-decoration-none text-white">
+                Eliminar
+            </a>
+        </button>
+    </div>
+    {% endif %}
+    <br>
 </section>
 <!--FIN DETALLE CONTENIDO-->
 {% endblock content %}

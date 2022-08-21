@@ -2,26 +2,30 @@
 {% block title %}Prueba{% endblock title %}
 {% block content %}
 <br>
-<div class="d-flex justify-content-center">
+<div class="d-flex w-100">
     <br>
-    <ul class="list-group list-group-flush">
+    <ul class="d-flex w-100 justify-content-evely list-group list-group-flush">
     {% for obj in object_list %}
-        <li class="list-group-item">
+        <li class="flex-row list-group-item w-100">
             {% if obj.content_type == 'carousel' %}
-                <img src="{{ obj.img.url }}" class="img-thumbnail">
+            <div class="h-50 w-50 d-inline-block">
+                <img src="{{ obj.img.url }}" class="img-thumbnail" style="object-fit: scale-down;">
+            </div>
             {% else %}
-                <p>{{ obj }}</p>
+                {{ obj }}
             {% endif %}
-            <button type="button" class="btn btn-danger">
-                <a href="{% url 'delete' obj.content_type obj.id %}" class="text-decoration-none text-white">
-                    Eliminar
-                </a>
-            </button>
-            <button type="button" class="btn btn-primary">
-                <a href="{% url 'update' obj.content_type obj.id %}" class="text-decoration-none text-white">
-                    Editar
-                </a>
-            </button>
+            <div class="d-flex flex-row justify-content-end">
+                <button type="button" class="btn btn-primary ms-1">
+                    <a href="{% url 'update' obj.content_type obj.id %}" class="text-decoration-none text-white">
+                        Editar
+                    </a>
+                </button>
+                <button type="button" class="btn btn-danger ms-1">
+                    <a href="{% url 'delete' obj.content_type obj.id %}" class="text-decoration-none text-white">
+                        Eliminar
+                    </a>
+                </button>
+            </div>
         </li>
     {% empty %}
         <h2>No hay contenido que mostrar</h2>
