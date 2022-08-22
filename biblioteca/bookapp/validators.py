@@ -1,3 +1,14 @@
+"""
+ - Autor: Andrés Alexander Meléndez Martínez
+ - Creado el 30/04/2022
+ - Proyecto de horas sociales en biblioteca
+ - Este archivo contiene las funciones que validan las extensiones
+ de los archivos subidos, estas funciones están implementadas en
+ models.py (de éste módulo) en el atributo correspondiente a cada archivo en
+ el modelo se encuentra un argumento 'validators=' en la función que crea el campo
+ en la base de datos
+"""
+
 import os
 from django.core.exceptions import ValidationError
 

@@ -1,3 +1,14 @@
+"""
+ - Autor: Andrés Alexander Meléndez Martínez
+ - Creado el 30/04/2022
+ - Proyecto de horas sociales en biblioteca
+ - Este archivo contiene los formularios para los modelos,
+ también las modificaciones pertienentes a estos, como los textos de ayuda,
+ el elemento HTML que representa cada campo, el estilo aplicado, etc
+ Para más información: https://docs.djangoproject.com/en/4.1/topics/forms/modelforms/
+ https://docs.djangoproject.com/en/4.1/ref/forms/widgets/
+"""
+
 from django import forms
 from .models import *
 

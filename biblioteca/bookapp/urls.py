@@ -1,3 +1,11 @@
+"""
+ - Autor: Andrés Alexander Meléndez Martínez
+ - Creado el 30/04/2022
+ - Proyecto de horas sociales en biblioteca
+ - Este archivo contiene las URLs que usan las vistas (views.py) 
+ de bookapp (solo de este módulo) para cargar en el navegador
+"""
+
 from django.urls import path
 from .views import *
 from django.views.generic.base import TemplateView 

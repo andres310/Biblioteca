@@ -1,3 +1,11 @@
+"""
+ - Autor: Andrés Alexander Meléndez Martínez
+ - Creado el 30/04/2022
+ - Proyecto de horas sociales en biblioteca
+ - Este archivo contiene los modelos (tablas) que usa el ORM
+ Para montar la base de datos
+"""
+
 from .validators import *
 from django.db import models
 from django.template.defaultfilters import slugify

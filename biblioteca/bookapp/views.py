@@ -1,3 +1,21 @@
+"""
+ - Autor: Andrés Alexander Meléndez Martínez
+ - Creado el 30/04/2022
+ - Proyecto de horas sociales en biblioteca
+ Este archivo contiene las vistas (hace de controlador); comunica
+ los modelos con los templates. Alguna información útil sobre
+ las vistas:
+ 1. Querysets y Q objects; se usan para las busquédas y otras cosas; los Q objects
+    se usan para hacer busquédas más complejas en querysets
+    https://docs.djangoproject.com/en/4.1/ref/models/querysets/
+ 2. Paginator; se usa para hacer paginación
+    https://docs.djangoproject.com/en/4.1/topics/pagination/
+ 3. Login Required y autenticación; válido para los decoradores y los mixins
+    https://docs.djangoproject.com/en/4.1/topics/auth/default/
+ 4. Messages; se usan para mostrar errores o que el formulario se subió con éxito
+    https://docs.djangoproject.com/en/4.1/ref/contrib/messages/
+"""
+
 from django.shortcuts import redirect, render
 from django.views.generic import View, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
